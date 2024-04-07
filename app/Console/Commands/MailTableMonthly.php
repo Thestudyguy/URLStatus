@@ -34,8 +34,13 @@ class MailTableMonthly extends Command
             foreach($data as $urls){
                 $url = $urls->url;
                 //$this->info('heres the url'. $urls);
-                $this->info($url);
+                $stat = Http::get($url);
+                $code = $stat->status($stat);
+                $id = $urls->id;
+                $this->info($id . ' ' . $code . ' ' . $url);
+                Urlcs::where('id', $id)->update(['status' => $code]);
             }
+            $this->info('Command finish');
         } catch (\Throwable $th) {
             throw $th;
         }

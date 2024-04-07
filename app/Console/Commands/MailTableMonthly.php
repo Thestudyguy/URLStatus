@@ -28,11 +28,13 @@ class MailTableMonthly extends Command
      */
     public function handle()
     {
+        $this->info('Command running...');
         try {
             $data = Urlcs::all();
             foreach($data as $urls){
-                $this->info('heres the url'. $urls);
-                //Log::info('heres the url'. $urls);
+                $url = $urls->url;
+                //$this->info('heres the url'. $urls);
+                $this->info($url);
             }
         } catch (\Throwable $th) {
             throw $th;

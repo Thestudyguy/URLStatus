@@ -50,7 +50,7 @@
             <div class="card-header">
                 <div class="input-group">
                     <select name="" id="filterStatus" class="form-control">
-                        <option value="" disabled selected hidden>Filter Url</option>
+                        <option value="" disabled selected hidden id="default">Filter Url</option>
                         <option value="100">1xx (Informational Response)</option>
                         <option value="200">2xx (Success)</option>
                         <option value="300">3xx (Redirection)</option>
@@ -93,22 +93,65 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
-        < script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        </script>
+        <script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity = "sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin = "anonymous" >
-            <
-            script src = "https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" >
-    </script>
+        <script src = "https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" >
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-       
+        const statuscode = {
+            100: 'Continue',
+            101: 'Switching Protocols',
+            200: 'OK',
+            201: 'Created',
+            202: 'Accepted',
+            203: 'Non-Authoritative Information',
+            204: 'No Content',
+            205: 'Reset Content',
+            206: 'Partial Content',
+            300: 'Multiple Choices',
+            301: 'Moved Permanently',
+            302: 'Found',
+            303: 'See Other',
+            304: 'Not Modified',
+            305: 'Use Proxy',
+            307: 'Temporary Redirect',
+            400: 'Bad Request',
+            401: 'Unauthorized',
+            402: 'Payment Required',
+            403: 'Forbidden',
+            404: 'Not Found',
+            405: 'Method Not Allowed',
+            406: 'Not Acceptable',
+            407: 'Proxy Authentication Required',
+            408: 'Request Timeout',
+            409: 'Conflict',
+            410: 'Gone',
+            411: 'Length Required',
+            412: 'Precondition Failed',
+            413: 'Request Entity Too Large',
+            414: 'Request-URI Too Long',
+            415: 'Unsupported Media Type',
+            416: 'Requested Range Not Satisfiable',
+            417: 'Expectation Failed',
+            500: 'Internal Server Error',
+            501: 'Not Implemented',
+            502: 'Bad Gateway',
+            503: 'Service Unavailable',
+            504: 'Gateway Timeout',
+            505: 'HTTP Version Not Supported'
+        };
         $("#filterStatus").on('change', function() {
             var value = $(this).val();
             filter(value);
         })
         $('#clear-filter').on('click', () => {
-            filter('');
+            $("#filterStatus").val('');
+            $("#default").prop("selected", true);
+            //$("#filterStatus option:not(#default)").show();
+            filter('')
         });
         function filter(code) {
             var csrfToken = $('meta[name="csrf-token"]').attr("content");
@@ -121,15 +164,33 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response.response);
+                    var res = response.response;
+                    var emptyRes = '<tr><td colspan="5">No matching data</td></tr>';
+                    if(res.length <= 0){
+                        return $("#table-body").html(emptyRes);
+                    }
                     $("#table-body").empty();
                     $.each(response.response, (index, url) => {
-                        console.log(url);
                         var stat = url.status;
                         var urls = url.url;
-                        console.log(stat);
+                        var toIntStat = parseInt(stat);
+                        var statusInfo = statuscode[stat] || "Unknown";
+                        switch (true) {
+                        case stat === '200':
+                            statusInfo = `<span class="badge text-bg-success" style="cursor: pointer" title="${statusInfo}">${stat}${statusInfo}</span>`;
+                            break;
+                        case toIntStat >= 400 && toIntStat < 500:
+                            statusInfo = `<span class="badge text-bg-warning" style="cursor: pointer" title="${statusInfo}">${stat}${statusInfo}</span>`;
+                            break;
+                        case toIntStat >= 500 && toIntStat < 600:
+                            statusInfo = `<span class="badge text-bg-danger" style="cursor: pointer" title="${statusInfo}">${stat}${statusInfo}</span>`;
+                            break;
+                        default:
+                            statusInfo = `<span class="badge text-bg-secondary" style="cursor: pointer" title="${statusInfo}">${stat}${statusInfo}</span>`;
+                            break;
+                        }
                         var app = `<tr> <td>${urls}</td>
-                                    <td><span class="badge text-bg-success">${stat}</span></td> 
+                                    <td>${statusInfo}</td> 
                                     <td><span class='badge text-bg-danger p-2' onclick="getUrlID('${url.id}','${urls}')" style="cursor: pointer" data-toggle="modal" data-target="#exampleModal">remove</span></td>
                                     <tr>`
                         $("#table-body").append(app);
@@ -140,7 +201,6 @@
                 },
             });
         }
-
         function scanURL() {
             var csrfToken = $('meta[name="csrf-token"]').attr("content");
             const url = document.getElementById('url').value;
@@ -156,7 +216,6 @@
                 }, 2000);
                 return;
             }
-            console.log(url);
             $('#loadingIndicator').show();
             $.ajax({
                 url: 'scan-url',
@@ -235,7 +294,6 @@
                     success: function(url) {
                         var urlLists = $('#table-body');
                         urlLists.html(url);
-                        console.log(url);
                     },
                     error: function(error) {
                         console.log(error);

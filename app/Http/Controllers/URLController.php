@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 class URLController extends Controller
 {
+
+   
     public function getURL(){
         try {
             $lists =  Urlcs::all();
@@ -79,7 +81,7 @@ class URLController extends Controller
     public function FilterStatus(Request $request){
         $status = $request->status;
         try {
-            $urlStatus = Urlcs::where('status', 'like', "%$status%")->get();
+            $urlStatus = Urlcs::where('status', 'like', "%$status%")->where('IsVisible', true)->get();
             return response()->json(['response'=>$urlStatus], 200);
         } catch (\Throwable $th) {
             throw $th;

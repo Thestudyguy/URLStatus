@@ -57,7 +57,7 @@
                         <option value="400">4xx (Client Error)</option>
                         <option value="500">5xx (Server Error)</option>
                     </select>
-                    <button class="btn btn-secondary">Clear</button>
+                    <button class="btn btn-secondary" id="clear-filter">Clear</button>
                 </div>
                 {{-- <input type="text" class="form-control mt-1" placeholder="search..." name="search" id="search"> --}}
             </div>
@@ -70,7 +70,7 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="asd">
+                    <tbody id="table-body">
                         @include('table')
                     </tbody>
                 </table>
@@ -96,29 +96,46 @@
         < script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity = "sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin = "anonymous" >
-            <script src = "https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" >
+            <
+            script src = "https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" >
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-        $(document).ready(function(){
+       
+        $("#filterStatus").on('change', function() {
+            var value = $(this).val();
+            filter(value);
+        })
+        $('#clear-filter').on('click', () => {
             filter('');
-            $("#filterStatus").on('change', function(){
-                var value = $(this).val();
-                filter(value);
-            })
         });
-
-        function filter(code){
+        function filter(code) {
             var csrfToken = $('meta[name="csrf-token"]').attr("content");
             $.ajax({
                 url: 'filter-url',
-                type:'POST',
-                data: {'status': code, _token:csrfToken},
-                dataType: 'json',
-                success: function(response){
+                type: 'POST',
+                data: {
+                    'status': code,
+                    _token: csrfToken
                 },
-                error: function(error){
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response.response);
+                    $("#table-body").empty();
+                    $.each(response.response, (index, url) => {
+                        console.log(url);
+                        var stat = url.status;
+                        var urls = url.url;
+                        console.log(stat);
+                        var app = `<tr> <td>${urls}</td>
+                                    <td><span class="badge text-bg-success">${stat}</span></td> 
+                                    <td><span class='badge text-bg-danger p-2' onclick="getUrlID('${url.id}','${urls}')" style="cursor: pointer" data-toggle="modal" data-target="#exampleModal">remove</span></td>
+                                    <tr>`
+                        $("#table-body").append(app);
+                    })
+                },
+                error: function(error) {
                     $('#errorAlert').removeAttr('hidden');
                 },
             });
@@ -187,9 +204,7 @@
         function removeUrl() {
             var csrfToken = $('meta[name="csrf-token"]').attr("content");
             var remID = $('#removeIDRef').val();
-            var loader =  $("#loadingIndicatorModal").show();
-            var modalBody = $(".modal-body").html();
-            $(".modal-body").html(loader);
+            var loader = $("#loadingIndicatorModal").show();
             $.ajax({
                 url: 'remove-url',
                 type: 'POST',
@@ -199,9 +214,12 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    $('#exampleModal button[data-dismiss="modal"]').click();
                     $("#successAlert").removeAttr('hidden');
-                    $(".modal-body").html(modalBody);
+                    $("#loadingIndicatorModal").hide();
+                    $('#exampleModal button[data-dismiss="modal"]').click();
+                    setTimeout(() => {
+                        $("#successAlert").attr('hidden', true);
+                    }, 5000);
                     listURL();
                 },
                 error: function(error) {
@@ -215,8 +233,9 @@
                     url: '/list-url',
                     type: 'GET',
                     success: function(url) {
-                        var urlLists = $('#asd');
+                        var urlLists = $('#table-body');
                         urlLists.html(url);
+                        console.log(url);
                     },
                     error: function(error) {
                         console.log(error);

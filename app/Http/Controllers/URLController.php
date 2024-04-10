@@ -6,6 +6,8 @@ use App\Models\Urlcs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Mail\SendTableAsMail;
+use Mail;
 class URLController extends Controller
 {
 
@@ -25,6 +27,8 @@ class URLController extends Controller
         $status = $response->status();
         $body = $response->body();
         $headers = $response->headers();
+        Log::info($headers);
+        Log::info($status);
         try {
             if(empty($url)){
                 return response()->json(['url is empty'], 500);
@@ -86,5 +90,22 @@ class URLController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+    public function getStatus(){
+        try {
+            $status = Urlcs::pluck('status')->unique();
+            $first =  substr($status,0, 1);
+            Log::info($first);
+            return response()->json(['status'=>$status, 'asd' => $first]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    public function sendMonthlyReport(){
+        $status = Urlcs::all();
+        $currentDate = date('l, F j, Y');
+        $sendTo = "lagrosaedrian06@gmail.com";
+        $mailMessage = 'Monthly Report - '.$currentDate;
+         Mail::to($sendTo)->send(new SendTableAsMail($status));
     }
 }

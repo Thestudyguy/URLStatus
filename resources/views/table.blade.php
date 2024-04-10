@@ -49,7 +49,7 @@
                 $statusInfo = $statuscode[$list->status] ?? 'Unknown';
             @endphp
             @switch($list->status)
-                @case('200')
+                @case($list->status >= 200 && $list->status < 206)
                     <td><span class="badge text-bg-success" style="cursor: pointer"
                             title="{{ $statusInfo }}">{{ $list->status }} {{ $statusInfo }}</span></td>
                 @break

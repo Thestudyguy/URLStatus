@@ -49,13 +49,8 @@
         <div class="card">
             <div class="card-header">
                 <div class="input-group">
-                    <select name="" id="filterStatus" class="form-control">
-                        <option value="" disabled selected hidden id="default">Filter Url</option>
-                        <option value="100">1xx (Informational Response)</option>
-                        <option value="200">2xx (Success)</option>
-                        <option value="300">3xx (Redirection)</option>
-                        <option value="400">4xx (Client Error)</option>
-                        <option value="500">5xx (Server Error)</option>
+                    <select name="" id="filterStatus" class="form-control" >
+                        <option value="" disabled selected hidden id="default">Filter URL Status</option>
                     </select>
                     <button class="btn btn-secondary" id="clear-filter">Clear</button>
                 </div>
@@ -75,8 +70,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer">
-                <button class="btn btn-primary">Mail</button>
+            <div class="card-footer p-2">
                 @include('modal')
             </div>
         </div>
@@ -93,12 +87,13 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
-        </script>
-        <script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-        integrity = "sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-        crossorigin = "anonymous" >
-        <script src = "https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" >
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
+        < script src = "https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" >
+            <
+            script src = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" >
+    </script>
 
     <script>
         const statuscode = {
@@ -141,8 +136,37 @@
             502: 'Bad Gateway',
             503: 'Service Unavailable',
             504: 'Gateway Timeout',
-            505: 'HTTP Version Not Supported'
+            505: 'HTTP Version Not Supported',
+            525: 'SSL Handshake Failed'
         };
+        $(document).ready(function(){
+            var token = $('meta[name="csrf-token"]').attr("content");
+            $.ajax({
+                url: 'get-status',
+                type: 'POST',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                contentType: 'application/json',
+                success: function(response){
+                    console.log(response.asd);
+                    if (response.status) {
+                        console.log(response.status);
+                        $.each(response.status, (index, status)=>{
+                            var selectEl = $("#filterStatus");
+                           var appOption = `<option value="${status}">${status}</option>`;
+                            selectEl.append(appOption);
+                        })
+                    } else {
+                        console.error('Unexpected response format:', response);
+                    }
+                },
+                error: function(error){
+                    console.error('AJAX Error:', error);
+                }
+            });
+        });
         $("#filterStatus").on('change', function() {
             var value = $(this).val();
             filter(value);
@@ -153,6 +177,7 @@
             //$("#filterStatus option:not(#default)").show();
             filter('')
         });
+
         function filter(code) {
             var csrfToken = $('meta[name="csrf-token"]').attr("content");
             $.ajax({
@@ -166,7 +191,7 @@
                 success: function(response) {
                     var res = response.response;
                     var emptyRes = '<tr><td colspan="5">No matching data</td></tr>';
-                    if(res.length <= 0){
+                    if (res.length <= 0) {
                         return $("#table-body").html(emptyRes);
                     }
                     $("#table-body").empty();
@@ -175,19 +200,33 @@
                         var urls = url.url;
                         var toIntStat = parseInt(stat);
                         var statusInfo = statuscode[stat] || "Unknown";
+                        console.log(typeof(stat));
+                        console.log(stat.charAt(0));
                         switch (true) {
-                        case stat === '200':
-                            statusInfo = `<span class="badge text-bg-success" style="cursor: pointer" title="${statusInfo}">${stat}${statusInfo}</span>`;
-                            break;
-                        case toIntStat >= 400 && toIntStat < 500:
-                            statusInfo = `<span class="badge text-bg-warning" style="cursor: pointer" title="${statusInfo}">${stat}${statusInfo}</span>`;
-                            break;
-                        case toIntStat >= 500 && toIntStat < 600:
-                            statusInfo = `<span class="badge text-bg-danger" style="cursor: pointer" title="${statusInfo}">${stat}${statusInfo}</span>`;
-                            break;
-                        default:
-                            statusInfo = `<span class="badge text-bg-secondary" style="cursor: pointer" title="${statusInfo}">${stat}${statusInfo}</span>`;
-                            break;
+                            case stat.charAt(0) === '1':
+                                statusInfo =
+                                    `<span class="badge text-bg-secondary" style="cursor: pointer" title="${statusInfo}">${stat} ${statusInfo}</span>`;
+                                break;
+                            case stat.charAt(0) == '2': // stat.charAt(0) == '2':
+                                statusInfo =
+                                    `<span class="badge text-bg-success" style="cursor: pointer" title="${statusInfo}">${stat} ${statusInfo}</span>`;
+                                break;
+                            case stat.charAt(0) === '3':
+                                statusInfo =
+                                    `<span class="badge text-bg-info" style="cursor: pointer" title="${statusInfo}">${stat} ${statusInfo}</span>`;
+                                break;
+                            case stat.charAt(0) === '4':
+                                statusInfo =
+                                    `<span class="badge text-bg-warning" style="cursor: pointer" title="${statusInfo}">${stat} ${statusInfo}</span>`;
+                                break;
+                            case stat.charAt(0) === '5':
+                                statusInfo =
+                                    `<span class="badge text-bg-danger" style="cursor: pointer" title="${statusInfo}">${stat} ${statusInfo}</span>`;
+                                break;
+                            default:
+                                statusInfo =
+                                    `<span class="badge text-bg-dark" style="cursor: pointer" title="${statusInfo}">${stat} ${statusInfo}</span>`;
+                                break;
                         }
                         var app = `<tr> <td>${urls}</td>
                                     <td>${statusInfo}</td> 
@@ -201,6 +240,7 @@
                 },
             });
         }
+
         function scanURL() {
             var csrfToken = $('meta[name="csrf-token"]').attr("content");
             const url = document.getElementById('url').value;
@@ -219,7 +259,7 @@
             $('#loadingIndicator').show();
             $.ajax({
                 url: 'scan-url',
-                type: 'POST',
+                type: 'GET',
                 data: {
                     url: url,
                     _token: csrfToken
@@ -301,11 +341,7 @@
                     }
                 });
             }
-
-
         }
-
-        function search() {}
     </script>
 </body>
 

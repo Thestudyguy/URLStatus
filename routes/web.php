@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [URLController::class, 'getURL']);
 Route::get('list-url', [URLController::class, 'listURL']);
-Route::post('scan-url', [URLController::class, 'GetURLHeaders']);
+Route::get('scan-url', [URLController::class, 'GetURLHeaders']);
 Route::post('search-url', [URLController::class,'search']);
 Route::post('remove-url', [URLController::class,'removeUrlfromList']);
 Route::post('filter-url', [URLController::class,'FilterStatus']);
+Route::post('get-status', [URLController::class,'getStatus']);
+Route::get('send-email', [URLController::class,'sendMonthlyReport']);

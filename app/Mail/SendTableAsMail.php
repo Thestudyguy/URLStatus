@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -13,12 +14,14 @@ class SendTableAsMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $mailMessage;
+    public $currentDate;
     /**
      * Create a new message instance.
      */
-    public function __construct($mailMessage)
+    public function __construct($mailMessage, $currentDate)
     {
         $this->mailMessage = $mailMessage;
+        $this->currentDate = $currentDate;
     }
 
     /**
@@ -27,7 +30,8 @@ class SendTableAsMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Send Table As Mail',
+            from: new Address('lagrosaedrian06@gmail.com', 'MediaChoy'),
+            subject: 'Monthly Report',
         );
     }
 

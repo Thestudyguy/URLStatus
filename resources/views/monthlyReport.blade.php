@@ -1,21 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<html>
 
-    <title>Document</title>
+<head>
 </head>
-<body>
-    <div class="card">
-        <div class="card-header">{{$mailMessage}}</div>
-        <div class="card-body"></div>
-        <div class="card-footer"></div>
-    </div>
+
+<body style="display: flex; flex-direction: column;">
+        <div class="card-body" style="display: flex; justify-content: start; align-items: start; flex-direction: column; border-radius: 5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            <table class="table table-stripped">
+                Monthly Report as of : {{$currentDate}}
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($mailMessage as $url)
+                    <tr>
+                        <td>{{$url->url}}</td>
+                        <td>{{$url->status}}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 </body>
 </html>

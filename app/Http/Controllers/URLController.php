@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Mail\SendTableAsMail;
-use Mail;
+use Illuminate\Support\Facades\Mail;
+
 class URLController extends Controller
 {
 
@@ -104,8 +105,20 @@ class URLController extends Controller
     public function sendMonthlyReport(){
         $status = Urlcs::all();
         $currentDate = date('l, F j, Y');
-        $sendTo = "lagrosaedrian06@gmail.com";
+        $sendTo = "ruinze@mediaoneph";
         $mailMessage = 'Monthly Report - '.$currentDate;
-         Mail::to($sendTo)->send(new SendTableAsMail($status));
+        Mail::to($sendTo)->send(new SendTableAsMail($status, $currentDate));
+    }
+
+
+
+
+
+    public function SendEmailWhenAURLinURLCSTableSuddenlyBecome400or500ToNotifySirRuinzeAboutTheMatterAndItsShouldBeCheckingEveryDayLoL(){
+        $urlStatus = Urlcs::pluck('status');
+        foreach($urlStatus as $url){
+            Log::info($url);
+        }
+        return response()->json(['response' => $urlStatus]);
     }
 }

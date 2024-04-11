@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <title>URL Status Checker</title>
@@ -20,8 +19,7 @@
             <input type="text" class="form-control" placeholder="Enter URL" name="url" id="url">
             <button class="btn btn-outline-secondary" type="button" onclick="scanURL()">Scan URL</button>
         </div>
-        <div class="spinner-border text-secondary" role="status" id="loadingIndicator"
-            style="display: none; align-items: center; justify-content: center;">
+        <div class="spinner-border text-secondary" role="status" id="loadingIndicator" style="display: none; align-items: center; justify-content: center;">
             <span class="visually-hidden">Loading...</span>
         </div>
         <div id="resultContainer">
@@ -49,7 +47,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="input-group">
-                    <select name="" id="filterStatus" class="form-control" >
+                    <select name="" id="filterStatus" class="form-control">
                         <option value="" disabled selected hidden id="default">Filter URL Status</option>
                     </select>
                     <button class="btn btn-secondary" id="clear-filter">Clear</button>
@@ -75,24 +73,19 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
-        < script src = "https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" >
-            <
-            script src = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" >
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
+        </script>
+        <script src = "https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </script>
 
     <script>
@@ -139,7 +132,7 @@
             505: 'HTTP Version Not Supported',
             525: 'SSL Handshake Failed'
         };
-        $(document).ready(function(){
+        $(document).ready(function() {
             var token = $('meta[name="csrf-token"]').attr("content");
             $.ajax({
                 url: 'get-status',
@@ -149,23 +142,37 @@
                     'X-CSRF-TOKEN': token
                 },
                 contentType: 'application/json',
-                success: function(response){
+                success: function(response) {
                     console.log(response.asd);
                     if (response.status) {
                         console.log(response.status);
-                        $.each(response.status, (index, status)=>{
+                        $.each(response.status, (index, status) => {
                             var selectEl = $("#filterStatus");
-                           var appOption = `<option value="${status}">${status}</option>`;
+                            var appOption = `<option value="${status}">${status}</option>`;
                             selectEl.append(appOption);
                         })
                     } else {
                         console.error('Unexpected response format:', response);
                     }
                 },
-                error: function(error){
+                error: function(error) {
                     console.error('AJAX Error:', error);
                 }
             });
+            $.ajax({
+                url: 'test-method',
+                type: "GET",
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                success: function(data){
+                    console.log(data);
+                },
+                error: function(error){
+                    console.error(error);
+                }
+            })
         });
         $("#filterStatus").on('change', function() {
             var value = $(this).val();
@@ -266,11 +273,10 @@
                 },
                 datatype: 'json',
                 success: function(data) {
+                    listURL();
                     $('#loadingIndicator').hide();
-                    //$('.alert').removeAttr('hidden');
                     $("#final-result").html(
                         `URL Status: <span class="badge text-bg-success">${data.status}</span>`);
-                    listURL();
                 },
                 error: function(xhr, status, error) {
                     console.log(error, xhr);
@@ -283,7 +289,7 @@
                     url: '/list-url',
                     type: 'GET',
                     success: function(url) {
-                        var urlLists = $('#asd');
+                        var urlLists = $('#table-body');
                         urlLists.html(url);
                     },
                     error: function(error) {

@@ -127,25 +127,42 @@ class URLController extends Controller
         $five = 5;
         $data = EventTable::pluck('EventStatusCode');
         $getData = EventTable::all();
-        $column1Values = [];
+        
+        //kana na loop
+        //Log::info($column1Values);
+        /**
+         * $column1Values = [];
+        $column2Values = [];
+        $okok = [];
 //kani na loop
         foreach ($getData as $row) {
             $column1Values[] = $row->EventStatusCode;
-            $column1Values[] = $row->EventURL;
-            Log::info($getData);
+            //$column1Values[] = $row->EventURL;
+            //Log::info($getData);
         }
-        //kana na loop
-        Log::info($column1Values);
+        foreach ($column1Values as $stuff) {
+            $okok[] = $stuff; 
+            $column2Values[] = substr($stuff, 0, 1);
+            Log::info($column2Values);
+            if($five == $column2Values || $four == $column2Values){
+                Log::info('match ' . $stuff . ' = ' . $five . '');
+            }else{
+                Log::info('not match ' . $stuff . ' = ' . $five . '');
+            }
+        }
+         * 
+         */
         $firstChar = [];
         $alChar = [];
         Log::info('start');
-        foreach ($data as $statChar) {
-            $firstChar[] = substr($statChar, 0, 1);
+        foreach ($getData as $statChar) {
+            $firtCharStuff = $statChar->EventStatusCode;
+            $firstChar[] = substr($firtCharStuff, 0, 1);
         }
         foreach ($firstChar as $char) {
             $alChar[] = $char;
             if ($five == $char || $four == $char) {
-                Log::info('match ' . $char . ' = ' . $five . '');
+                Log::info('match ' . $char . ' = ' . $five . ' '. $statChar->EventURL);
                 Log::info('imagine this is a method to call when we met the criteria');
             } else {
                 Log::info('not match ' . $char . ' = ' . $five . '');

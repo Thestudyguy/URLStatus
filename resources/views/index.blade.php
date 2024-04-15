@@ -68,7 +68,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer p-2">
+            <div class="card-footer p-4">
                 @include('modal')
             </div>
         </div>
@@ -159,20 +159,6 @@
                     console.error('AJAX Error:', error);
                 }
             });
-            $.ajax({
-                url: 'test-method',
-                type: "GET",
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': token
-                },
-                success: function(data){
-                    console.log(data);
-                },
-                error: function(error){
-                    console.error(error);
-                }
-            })
         });
         $("#filterStatus").on('change', function() {
             var value = $(this).val();

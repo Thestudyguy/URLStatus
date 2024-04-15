@@ -25,13 +25,14 @@ class SendMonthlyReport extends Command
     /**
      * Execute the console command.
      */
+    
     public function handle()
     {
         try {
             $this->info('sending report...');
             $status = Urlcs::all();
             $currentDate = date('l, F j, Y');
-            $sendTo = "vlagria3@gmail.com";
+            $sendTo = "lagrosaedrian06@gmail.com";
             $mailMessage = 'Monthly Report - '.$currentDate;
             Mail::to($sendTo)->send(new SendTableAsMail($status, $currentDate));
             $this->info('report sent');

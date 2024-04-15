@@ -23,4 +23,4 @@ Route::post('remove-url', [URLController::class,'removeUrlfromList']);
 Route::post('filter-url', [URLController::class,'FilterStatus']);
 Route::post('get-status', [URLController::class,'getStatus']);
 Route::get('send-email', [URLController::class,'sendMonthlyReport']);
-Route::get('test-method', [URLController::class,'SendEmailWhenAURLinURLCSTableSuddenlyBecome400or500ToNotifySirRuinzeAboutTheMatterAndItsShouldBeCheckingEveryDayLoL']);
+Route::get('test-table', [URLController::class, 'getStatusandPIS']);

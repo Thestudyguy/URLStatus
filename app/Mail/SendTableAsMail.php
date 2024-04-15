@@ -30,7 +30,7 @@ class SendTableAsMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('lagrosaedrian06@gmail.com', 'MediaChoy'),
+            from: new Address('lagrosaedrian06@gmail.com', 'MediaOnePH'),
             subject: 'Monthly Report',
         );
     }

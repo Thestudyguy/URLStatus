@@ -28,7 +28,7 @@ class MailTableMonthly extends Command
      */
     public function handle()
     {
-        $this->info('Command running...');
+        $this->info('Checking urls...');
         try {
             $data = Urlcs::all();
             foreach($data as $urls){
@@ -40,9 +40,12 @@ class MailTableMonthly extends Command
                 $this->info($id . ' ' . $code . ' ' . $url);
                 Urlcs::where('id', $id)->update(['status' => $code]);
             }
+
+            
             $this->info('Command finish');
         } catch (\Throwable $th) {
             throw $th;
         }
     }
+
 }

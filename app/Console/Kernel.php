@@ -14,7 +14,6 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('app:mail-table-monthly')->daily();
-        $schedule->command('app:send-monthly-report')->monthly();
     }
 
     /**

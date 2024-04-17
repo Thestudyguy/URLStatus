@@ -24,3 +24,4 @@ Route::post('filter-url', [URLController::class,'FilterStatus']);
 Route::post('get-status', [URLController::class,'getStatus']);
 Route::get('send-email', [URLController::class,'sendMonthlyReport']);
 Route::get('test-table', [URLController::class, 'getStatusandPIS']);
+Route::post('store-data', [URLController::class, 'storeEmailandURL']);

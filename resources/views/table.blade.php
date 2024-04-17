@@ -81,7 +81,13 @@
                     <td><span class="badge text-bg-secondary" style="cursor: pointer">{{ $list->status }}</span></td>
             @endswitch
             <td><span class="badge text-bg-danger p-2" onclick="getUrlID('{{ $list->id }}', '{{ $list->url }}')"
-                    style="cursor: pointer" data-toggle="modal" data-target="#exampleModal">remove</span></td>
+                    style="cursor: pointer" data-toggle="modal" data-target="#exampleModal">remove</span>
+                   
+                </td>
+                <td>
+                <span class="badge text-bg-primary p-2" data-toggle="modal" data-target="#emailModal"
+                    style="cursor: pointer">email</span>
+                </td>
         </tr>
     @endif
 @endforeach

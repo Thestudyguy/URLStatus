@@ -15,20 +15,7 @@
 
 <body style="max-height: 100vh;">
     <div class="container mt-4">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Enter URL" name="url" id="url">
-            <button class="btn btn-outline-secondary" type="button" onclick="scanURL()">Scan URL</button>
-        </div>
-        <div class="spinner-border text-secondary" role="status" id="loadingIndicator" style="display: none; align-items: center; justify-content: center;">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-        <div id="resultContainer">
-            <strong>
-                <p id="res">Result: </p>
-            </strong>
-            {{-- <p id="url-detected"></p> --}}
-            <p id="final-result"></p>
-        </div>
+        
         <div hidden class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
             URL removed successfully.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -61,15 +48,21 @@
                             <th>URL</th>
                             <th>Status</th>
                             <th>Action</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody id="table-body">
                         @include('table')
+                        
                     </tbody>
+                    
                 </table>
             </div>
-            <div class="card-footer p-4">
+            <div class="card-footer">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#urlemailModal">Add New</button>
                 @include('modal')
+                @include('email')
+                @include('url_email')
             </div>
         </div>
     </div>
@@ -132,6 +125,35 @@
             505: 'HTTP Version Not Supported',
             525: 'SSL Handshake Failed'
         };
+
+        function saveURLandEmail(){
+            var token = $('meta[name="csrf-token"]').attr("content");
+           var email = $("#insertMail").val();
+           var url = $("#url").val();
+           var mailpatt =  /([a-zA-Z0-9]+)([\_\.\-{1}]?)([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/gi;
+            var res = email.match(mailpatt);
+            $.ajax({
+                url: 'store-data',
+                type: 'POST',
+                data: {
+                    url: url,
+                    email: res,
+                    _token: token
+                },
+                datatype: 'json/application',
+                success:function(data){
+                    console.log(data.response);
+                },
+                error: function(error){
+                    console.log('something went wrong');
+                }
+
+            })
+//https://www.novogene.com/us-en/
+// edrian@gmail.com ruinze@gmail.com vlagria3@gmail.com
+        }
+
+
         $(document).ready(function() {
             var token = $('meta[name="csrf-token"]').attr("content");
             $.ajax({

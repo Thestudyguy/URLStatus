@@ -143,6 +143,7 @@
                 datatype: 'json/application',
                 success:function(data){
                     console.log(data.response);
+                    console.log(data.email);
                 },
                 error: function(error){
                     console.log('something went wrong');

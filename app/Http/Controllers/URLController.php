@@ -33,10 +33,12 @@ class URLController extends Controller
                 Log::info($email);
 
                 foreach ($email as $singleEmail) {
-                    
+                    Log::info($singleEmail);
+                    Log::info($url_id);
+                    $email[] = $singleEmail;
                 }
 
-                return response()->json(['response' => $url, 'status' => $status, 'proxyID' => $uid], 200);
+                return response()->json(['response' => $url, 'status' => $status, 'proxyID' => $uid, 'email' => $email], 200);
             }else {
                 return response()->json(['isExisting' => 'url already exists', 'status' => $status]);
             }
@@ -126,9 +128,9 @@ class URLController extends Controller
     //        $firstChar[] = substr($firtCharStuff, 0, 1);
     //        Log::info($firstChar);
     //    }
-    //    foreach ($firstChar as $char) {
     //        $alChar[] = $char;
     //        if ($five == $char) {
+    //    foreach ($firstChar as $char) {
     //            Log::info('match ' . $char . ' = ' . $five . ' '. $statChar->EventURL);
     //            Log::info('imagine this is a method to call when we met the criteria');
     //        }
@@ -161,6 +163,13 @@ class URLController extends Controller
         $currentDate = date('l, F j, Y');
         $sendTo = "lagrosaedrian06@gmail.com";
         $mailMessage = 'Monthly Report - ' . $currentDate;
-        Mail::to($sendTo)->send(new SendTableAsMail($status, $currentDate));
+        if($status == $status){
+            Mail::to($sendTo)->send(new SendTableAsMail($status, $currentDate));
+            return response()->json(['respond' => 'its working']);
+        }
+    }
+    public function testHelpers(){
+        $falsePIS = EventTable::where('piece_is_sent', false)->get();
+        dd($falsePIS);
     }
 }

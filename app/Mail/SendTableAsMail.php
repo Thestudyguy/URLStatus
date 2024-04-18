@@ -13,14 +13,14 @@ use Illuminate\Queue\SerializesModels;
 class SendTableAsMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $mailMessage;
+    public $mail;
     public $currentDate;
     /**
      * Create a new message instance.
      */
-    public function __construct($mailMessage, $currentDate)
+    public function __construct($mail, $currentDate)
     {
-        $this->mailMessage = $mailMessage;
+        $this->mail = $mail;
         $this->currentDate = $currentDate;
     }
 

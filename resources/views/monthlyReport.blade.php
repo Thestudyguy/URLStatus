@@ -20,10 +20,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($mailMessage as $url)
+                    @foreach ($mail as $url)
                     <tr>
-                        <td><a href="" style="color: whitesmoke;">{{urldecode($url->url)}}</a></td>
-                        <td>{{$url->status}}</td>
+                        <td><a href="" style="color: whitesmoke;">{{urldecode($url->EventURL)}}</a></td>
+                        <td>{{$url->EventStatusCode}}</td>
                     </tr>
                     @endforeach
 

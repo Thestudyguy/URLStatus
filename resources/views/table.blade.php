@@ -50,6 +50,7 @@
                     505 => 'HTTP Version Not Supported',
                     525 => 'SSL Handshake Failed'
                 ];
+               
 
                 $statusInfo = $statuscode[$list->status] ?? 'Unknown';
             @endphp

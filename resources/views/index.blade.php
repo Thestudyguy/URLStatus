@@ -126,6 +126,49 @@
             525: 'SSL Handshake Failed'
         };
 
+        $(document).ready(function() {
+    var emailInputCounter = 0;
+
+    $("#addEmailInput").click(function() {
+        emailInputCounter++;
+        var emailInputHtml = '<div class="input-group mt-2 emailInputWrapper" id="emailInputGroup_' + emailInputCounter + '">' +
+            '<input type="email" class="form-control emailInput" placeholder="Enter Email" name="email[]" required>' +
+            '<button class="btn btn-outline-danger" type="button" onclick="removeEmailInput(' + emailInputCounter + ')">Remove</button>' +
+            '</div>';
+        $("#emailInputs").append(emailInputHtml);
+        $("#emailInputGroup_" + emailInputCounter).hide().fadeIn();
+    });
+
+    window.removeEmailInput = function(inputId) {
+        $("#emailInputGroup_" + inputId).fadeOut(function() {
+            $(this).remove();
+            checkEmptyInputs();
+        });
+    };
+
+    window.saveURLandEmail = function() {
+        checkEmptyInputs();
+
+    };
+
+    function checkEmptyInputs() {
+        var emptyInputs = $(".emailInput").filter(function() {
+            return $(this).val().trim() === '';
+        });
+        if (emptyInputs.length > 0) {
+            emptyInputs.css("border-color", "red");
+            $("#emptyInputsError").text("Please fill in all email fields.").show();
+        } else {
+            $(".emailInput").css("border-color", "");
+            $("#emptyInputsError").text("").hide();
+        }
+    }
+});
+
+
+
+
+
         function saveURLandEmail(){
             var token = $('meta[name="csrf-token"]').attr("content");
            var email = $("#insertMail").val();

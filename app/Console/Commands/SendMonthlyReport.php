@@ -31,27 +31,6 @@ class SendMonthlyReport extends Command
     {
         try {
 
-            $data = EventTable::all();
-            $firstChar = [];
-            $chars = [];
-            $four = false;
-            $five = false;
-            foreach ($data as $url) {
-                $char = $url->EventStatusCode;
-                $firstChar[] = substr($char, 0,1);
-            }
-            foreach ($firstChar as $subsrt) {
-                    $chars[] = $subsrt;
-                    if(5 == $subsrt){
-                        //if sent 
-                        //five = true
-                    }elseif (4 == $subsrt) {
-                        //if sent 
-                        //four = true
-                    }else{
-                        return;
-                    }
-            }
 
             //$this->info('sending report...');
             //$status = Urlcs::all();

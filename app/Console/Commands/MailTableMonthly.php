@@ -36,31 +36,13 @@ class MailTableMonthly extends Command
             $data = Urlcs::all();
             foreach($data as $urls){
                 $url = $urls->url;
-                //$this->info('heres the url'. $urls);
                 $stat = Http::get($url);
                 $code = $stat->status($stat);
                 $id = $urls->id;
-                //$this->info($id . ' ' . $code . ' ' . $url);
+                $statChar = $code;
+                $firstStatChar = substr($statChar, 0, 1);
                 Urlcs::where('id', $id)->update(['status' => $code]);
             }
-            $event = EventTable::where('piece_is_sent', false)->get();
-            
-            foreach ($event as $mail) {
-            $currentDate = date('l, F j, Y');
-            $sendTo = "lagrosaedrian06@gmail.com";
-            //$mailMessage = 'Monthly Report - ' . $currentDate;
-            //Mail::to($sendTo)->send(new SendTableAsMail($mail, $currentDate));
-                $eventURL = $mail->EventURL;
-                $eventStat = $mail->EventStatusCode;
-                $eventPIS = $mail->piece_is_sent;
-                $this->info($eventStat . ' ' . $eventURL . ' '. $eventPIS);
-                if($eventPIS == 0){
-                    Mail::to($sendTo)->send(new SendTableAsMail($mail, $currentDate));
-                }else{
-                    break;
-                }
-            }
-            
             $this->info('Command finish');
         } catch (\Throwable $th) {
             throw $th;

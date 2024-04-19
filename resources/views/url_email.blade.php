@@ -1,4 +1,4 @@
-<div class="modal fade" id="urlemailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" id="urlemailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -31,6 +31,14 @@
         </div>
       </div>
       <div class="modal-footer">
+        <div hidden class="alert alert-warning alert-dismissible fade show" role="alert" id="emptyAlert">
+          <strong>Hold on!</strong>
+          <p>Do you want to proceed without incorporating the url with email?</p>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <button class="btn btn-primary" id="proceedWithOutEmail">Yes</button>
+        </div>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary" onclick="saveURLandEmail()">Save</button>
       </div>

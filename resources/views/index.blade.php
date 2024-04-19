@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <title>URL Status Checker</title>
@@ -15,7 +16,7 @@
 
 <body style="max-height: 100vh;">
     <div class="container mt-4">
-        
+
         <div hidden class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
             URL removed successfully.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -53,9 +54,9 @@
                     </thead>
                     <tbody id="table-body">
                         @include('table')
-                        
+
                     </tbody>
-                    
+
                 </table>
             </div>
             <div class="card-footer">
@@ -66,18 +67,23 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
-        </script>
-        <script src = "https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </script>
 
@@ -126,54 +132,103 @@
             525: 'SSL Handshake Failed'
         };
 
+        
+        
+        
+        
+        
+        
         $(document).ready(function() {
-    var emailInputCounter = 0;
+            var emailInputCounter = 0;
 
-    $("#addEmailInput").click(function() {
-        emailInputCounter++;
-        var emailInputHtml = '<div class="input-group mt-2 emailInputWrapper" id="emailInputGroup_' + emailInputCounter + '">' +
-            '<input type="email" class="form-control emailInput" placeholder="Enter Email" name="email[]" required>' +
-            '<button class="btn btn-outline-danger" type="button" onclick="removeEmailInput(' + emailInputCounter + ')">Remove</button>' +
-            '</div>';
-        $("#emailInputs").append(emailInputHtml);
-        $("#emailInputGroup_" + emailInputCounter).hide().fadeIn();
-    });
+            $("#addEmailInput").click(function() {
+                emailInputCounter++;
+                var emailInputHtml =
+                    '<div class="input-group mt-2 emailInputWrapper" id="emailInputGroup_' +
+                    emailInputCounter + '">' +
+                    '<input type="email" class="form-control emailInput" placeholder="Enter Email" name="email[]" required>' +
+                    '<button class="btn btn-outline-danger" type="button" onclick="removeEmailInput(' +
+                    emailInputCounter + ')">Remove</button>' +
+                    '</div>';
+                $("#emailInputs").append(emailInputHtml);
+                $("#emailInputGroup_" + emailInputCounter).hide().slideDown();
+            });
+            window.removeEmailInput = function(inputId) {
+                $("#emailInputGroup_" + inputId).fadeOut(function() {
+                    $(this).remove();
+                });
+            };
+            window.saveURLandEmail = function() {
+                var emails = [];
+                var emailInputFlag = true;
+                var urlInputFlag = true;
+                const url = document.getElementById('url').value;
+                $('input[name="email[]"]').each(function() {
+                    emails.push($(this).val());
+                   
+                });
+                var isEmpty = emails.some((email)=>{
+                    return email.trim() == '';
+                });
+                if(isEmpty && url.trim() == ''){
+                    console.log('email & url empty', emails);
+                }
+               else if(isEmpty){
+                    console.log('email is empty', emails);
+                }
+                else if(url.trim()== ''){
+                    console.log('url is empty');
+                    $('#url').css('border-color', 'red');
+                    $('#res').text('Please enter a URL');
+                    setTimeout(() => {
+                        $('#url').css('border-color', 'red');
+                        $('#res').text('Please enter a URL');
+                    }, 2500);
 
-    window.removeEmailInput = function(inputId) {
-        $("#emailInputGroup_" + inputId).fadeOut(function() {
-            $(this).remove();
-            checkEmptyInputs();
+                }
+                else if(emailInputCounter == 0){
+                    $("#emptyAlert").removeAttr('hidden');
+                }
+                else{
+                    var token = $('meta[name="csrf-token"]').attr("content");
+                    $.ajax({
+                        url: 'store-data',
+                        type: 'POST',
+                        data: {
+                            _token: token,
+                            email: emails,
+                            url: url
+                        },
+                        dataType: 'json/application',
+                        success: function(data){
+                            console.log(data.response);
+                            console.log('done');
+                        },
+                        error: function(error){
+                            console.error(error);
+                        }
+                    })
+                }
+            };
         });
-    };
 
-    window.saveURLandEmail = function() {
-        checkEmptyInputs();
-
-    };
-
-    function checkEmptyInputs() {
-        var emptyInputs = $(".emailInput").filter(function() {
-            return $(this).val().trim() === '';
+        
+        
+        
+        
+        
+        
+        $("#proceedWithOutEmail").click(function(){
+            console.log('proceed');
         });
-        if (emptyInputs.length > 0) {
-            emptyInputs.css("border-color", "red");
-            $("#emptyInputsError").text("Please fill in all email fields.").show();
-        } else {
-            $(".emailInput").css("border-color", "");
-            $("#emptyInputsError").text("").hide();
-        }
-    }
-});
-
-
-
-
-
-        function saveURLandEmail(){
+        
+        
+        
+        function saveURLandEmail() {
             var token = $('meta[name="csrf-token"]').attr("content");
-           var email = $("#insertMail").val();
-           var url = $("#url").val();
-           var mailpatt =  /([a-zA-Z0-9]+)([\_\.\-{1}]?)([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/gi;
+            var email = $("#insertMail").val();
+            var url = $("#url").val();
+            var mailpatt = /([a-zA-Z0-9]+)([\_\.\-{1}]?)([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/gi;
             var res = email.match(mailpatt);
             $.ajax({
                 url: 'store-data',
@@ -184,17 +239,17 @@
                     _token: token
                 },
                 datatype: 'json/application',
-                success:function(data){
+                success: function(data) {
                     console.log(data.response);
                     console.log(data.email);
                 },
-                error: function(error){
+                error: function(error) {
                     console.log('something went wrong');
                 }
 
             })
-//https://www.novogene.com/us-en/
-// edrian@gmail.com ruinze@gmail.com vlagria3@gmail.com
+            //https://www.novogene.com/us-en/
+            // edrian@gmail.com ruinze@gmail.com vlagria3@gmail.com
         }
 
 

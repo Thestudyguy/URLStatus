@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Mail\SendTableAsMail;
 use App\Models\EventTable;
+use App\Models\MailModel;
+use App\Models\UrlEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,7 +21,7 @@ class URLController extends Controller
             $url = $request->url;
             $emails = $request->email;
             $response = Http::get($url);
-            $status = $response->status();
+            $status = '404';//$response->status();
             foreach ($emails as $mail) {
                 $email[] = $mail;
             }
@@ -33,9 +35,10 @@ class URLController extends Controller
                 Log::info($email);
 
                 foreach ($email as $singleEmail) {
-                    Log::info($singleEmail);
-                    Log::info($url_id);
-                    $email[] = $singleEmail;
+                    UrlEmail::create([
+                        'email' => $singleEmail,
+                        'url_id' => $url_id
+                    ]);
                 }
 
                 return response()->json(['response' => $url, 'status' => $status, 'proxyID' => $uid, 'email' => $email], 200);
@@ -115,37 +118,7 @@ class URLController extends Controller
             throw $th;
         }
     }
-    //public function getStatusandPIS()
-    //{
-    //    $four = 4;
-    //    $five = 5;
-    //    $getData = EventTable::all();
-    //    $firstChar = [];
-    //    $alChar = [];
-    //    Log::info('start');
-    //    foreach ($getData as $statChar) {
-    //        $firtCharStuff = $statChar->EventStatusCode;
-    //        $firstChar[] = substr($firtCharStuff, 0, 1);
-    //        Log::info($firstChar);
-    //    }
-    //        $alChar[] = $char;
-    //        if ($five == $char) {
-    //    foreach ($firstChar as $char) {
-    //            Log::info('match ' . $char . ' = ' . $five . ' '. $statChar->EventURL);
-    //            Log::info('imagine this is a method to call when we met the criteria');
-    //        }
-    //        else if($four == $char){
-    //            Log::info('match ' . $char . ' = ' . $four . ' '. $statChar->EventURL);
-    //            Log::info('imagine this is a method to call when we met the criteria');
-    //        }
-    //        else {
-    //            Log::info('not match ' . $char . ' = ' . $five . '');
-    //        }
-    //    }
-    //    Log::info($alChar);
-    //    Log::info('end');
-    //}
-
+    
     public function getStatus()
     {
         try {
@@ -168,8 +141,9 @@ class URLController extends Controller
             return response()->json(['respond' => 'its working']);
         }
     }
-    public function testHelpers(){
-        $falsePIS = EventTable::where('piece_is_sent', false)->get();
-        dd($falsePIS);
+    
+
+    public function GetEmail(Request $request){
+
     }
 }

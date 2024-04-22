@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Mail\SendTableAsMail;
-use App\Models\EventTable;
-use App\Models\MailModel;
-use App\Models\UrlEmail;
+use App\Models\Emails;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,9 +33,9 @@ class URLController extends Controller
                 Log::info($email);
 
                 foreach ($email as $singleEmail) {
-                    UrlEmail::create([
+                    Emails::create([
                         'email' => $singleEmail,
-                        'url_id' => $url_id
+                        'url' => $url_id
                     ]);
                 }
 
@@ -143,7 +141,12 @@ class URLController extends Controller
     }
     
 
-    public function GetEmail(Request $request){
-
+    public function GetEmail($id){
+        try {
+            $url_emails = Emails::where('url', $id)->pluck('url');  
+            return response()->json(['response'=> $url_emails]);          
+        } catch (\Throwable $th) {
+            throw new $th;
+        }
     }
 }

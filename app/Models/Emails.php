@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\URL;
 
-class UrlEmail extends Model
+class Emails extends Model
 {
     use HasFactory;
-    protected $fillable = ['email', 'url_id'];
-    public function UrlEmail() : BelongsTo{
-        return $this->belongsTo(Urlcs::class, 'url_id');
+    protected $fillable = ['email', 'url'];
+    public function Email() : BelongsTo{
+        return $this->belongsTo(URL::class, 'url');
     }
 }

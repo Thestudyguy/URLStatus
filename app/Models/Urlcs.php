@@ -11,6 +11,6 @@ class Urlcs extends Model
     use HasFactory;
     protected $fillable = ['url', 'status'];
     public function URL() : HasMany{
-        return $this->hasMany(UrlEmail::class, 'url_id');
+        return $this->hasMany(Emails::class, 'url');
     }
 }

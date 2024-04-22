@@ -25,4 +25,4 @@ Route::post('get-status', [URLController::class,'getStatus']);
 Route::get('send-email', [URLController::class,'sendMonthlyReport']);
 Route::get('test-table', [URLController::class, 'getStatusandPIS']);
 Route::post('store-data', [URLController::class, 'storeEmailandURL']);
-Route::get('test-stuff', [URLController::class, 'testHelpers']);
+Route::post('get-email/{id}', [URLController::class, 'getEmail']);

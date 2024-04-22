@@ -54,7 +54,6 @@
                     </thead>
                     <tbody id="table-body">
                         @include('table')
-
                     </tbody>
 
                 </table>
@@ -131,13 +130,26 @@
             505: 'HTTP Version Not Supported',
             525: 'SSL Handshake Failed'
         };
+        
+        function getEmail(id, url){
+            var token = $('meta[name="csrf-token"]').attr("content");
+            $("#title").text(url);
+            $("#loadingIndicatorEmailModal").show();
+            $.ajax({
+                url: 'get-email/'+id,
+                type: 'POST',
+                dataType: 'application/json',
+                success: function(response){
+                    console.log(response.response);
+                $("#loadingIndicatorEmailModal").hide();
+                    $("#debug").text(response.response);
+                },
+                error: function(error){
+                    console.error(error);
+                }
+            })
+        }
 
-        
-        
-        
-        
-        
-        
         $(document).ready(function() {
             var emailInputCounter = 0;
 
@@ -213,16 +225,9 @@
         });
 
         
-        
-        
-        
-        
-        
         $("#proceedWithOutEmail").click(function(){
             console.log('proceed');
         });
-        
-        
         
         function saveURLandEmail() {
             var token = $('meta[name="csrf-token"]').attr("content");
@@ -321,7 +326,7 @@
                                 statusInfo =
                                     `<span class="badge text-bg-secondary" style="cursor: pointer" title="${statusInfo}">${stat} ${statusInfo}</span>`;
                                 break;
-                            case stat.charAt(0) == '2': // stat.charAt(0) == '2':
+                            case stat.charAt(0) == '2':
                                 statusInfo =
                                     `<span class="badge text-bg-success" style="cursor: pointer" title="${statusInfo}">${stat} ${statusInfo}</span>`;
                                 break;
@@ -345,7 +350,9 @@
                         var app = `<tr> <td>${urls}</td>
                                     <td>${statusInfo}</td> 
                                     <td><span class='badge text-bg-danger p-2' onclick="getUrlID('${url.id}','${urls}')" style="cursor: pointer" data-toggle="modal" data-target="#exampleModal">remove</span></td>
-                                    <tr>`
+                                    <td><span class='badge text-bg-primary p-2' onclick="getEmailID('${url.id}','${urls}')" style="cursor: pointer" data-toggle="modal" data-target="#exampleModal">email</span></td>
+                                    <tr>
+                                    `
                         $("#table-body").append(app);
                     })
                 },

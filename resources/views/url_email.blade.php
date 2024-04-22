@@ -31,12 +31,12 @@
         </div>
       </div>
       <div class="modal-footer">
-        <div hidden class="alert alert-warning alert-dismissible fade show" role="alert" id="emptyAlert">
+        <div hidden class="alert alert-warning alert-dismissible fade show mr-5" role="alert" id="emptyAlert">
           <strong>Hold on!</strong>
           <p>Do you want to proceed without incorporating the url with email?</p>
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button> -->
           <button class="btn btn-primary" id="proceedWithOutEmail">Yes</button>
         </div>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

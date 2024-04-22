@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-
 return new class extends Migration
 {
     /**
@@ -13,12 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        
-        Schema::create('urlcs', function (Blueprint $table) {
+        Schema::create('emails', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
-            $table->string('status');
-            $table->boolean('IsVisible')->default(true);
+            $table->string('email');
+            $table->unsignedBigInteger('url');
+            $table->foreign('url')->references('id')->on('urlcs')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('urlcs');
+        Schema::dropIfExists('emails');
     }
 };

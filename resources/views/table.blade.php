@@ -87,7 +87,7 @@
                 </td>
                 <td>
                 <span class="badge text-bg-primary p-2" data-toggle="modal" data-target="#emailModal"
-                    style="cursor: pointer">email</span>
+                    style="cursor: pointer" onclick="getEmail('{{ $list->id }}', '{{ $list->url }}')">email</span>
                 </td>
         </tr>
     @endif

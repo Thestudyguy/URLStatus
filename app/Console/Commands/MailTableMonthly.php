@@ -52,10 +52,9 @@ class MailTableMonthly extends Command
                         $sendTo = $singleMail;
                         Urlcs::where('id', $url->id)->update(['status' => $status]);
                         if($statusCode == 4 || $statusCode == 5){
-                            $URLstatus = (' url '.$url->url. ' Emails '. $singleMail. ' status '.$status);
+                            $URLstatus = (' url '.$url->url. ' Status went from '.$url->status.' to '.$status);
                             //$this->info("notify client with this client error = {$url->url} = {$status} emails {$singleMail}");
                             Mail::to($sendTo)->send(new SendTableAsMail($URLstatus, $currentDate));
-                            
                         }else{
                            $this->info('we good for now my g');
                         }

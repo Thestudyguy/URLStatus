@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Mail\SendTableAsMail;
 use App\Models\Emails;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,7 +20,7 @@ class URLController extends Controller
             $url = $request->url;
             $emails = $request->email;
             $response = Http::get($url);
-            $status = '404';//$response->status();
+            $status = $response->status();
             foreach ($emails as $mail) {
                 $email[] = $mail;
             }
@@ -130,21 +131,56 @@ class URLController extends Controller
     }
     public function sendMonthlyReport()
     {
-        $status = Urlcs::all();
+       // $this->info('Checking url...');
+        //$this->info(' ');
         $currentDate = date('l, F j, Y');
-        $sendTo = "lagrosaedrian06@gmail.com";
-        $mailMessage = 'Monthly Report - ' . $currentDate;
-        if($status == $status){
-            Mail::to($sendTo)->send(new SendTableAsMail($status, $currentDate));
-            return response()->json(['respond' => 'its working']);
+        try {
+            $individualEmail = [];
+            $data = Urlcs::all();
+            foreach ($data as $url) {
+                $status = Http::get($url->url)->status();
+                $statusCode = substr($status, 0, 1);
+                
+                if ($status != $url->status) {
+                    $url_emails = DB::table('emails')
+                    ->where('url', $url->id)
+                    ->pluck('email');
+                    foreach ($url_emails as $singleMail) {
+                        $sendTo = $singleMail;
+                        Urlcs::where('id', $url->id)->update(['status' => $status]);
+                        if($statusCode == 4 || $statusCode == 5){
+                            $URLstatus = (' url '.$url->url. ' Status went from '.$url->status.' to '.$status);
+                            //$this->info("notify client with this client error = {$url->url} = {$status} emails {$singleMail}");
+                            Mail::to($sendTo)->send(new SendTableAsMail($URLstatus, $currentDate));
+                            return response()->json(['response'=>'working']);
+                        }else{
+                           //$this->info('we good for now my g');
+                        }
+                    }
+                }
+            }
+            //$this->info(' ');
+            //$this->info('Command finish');
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
     
 
     public function GetEmail($id){
+        $singleMail = [];
         try {
-            $url_emails = Emails::where('url', $id)->pluck('url');  
-            return response()->json(['response'=> $url_emails]);          
+            $url_emails = DB::table('emails')
+            ->where('url', $id)
+            ->pluck('email');
+            foreach ($url_emails as $email) {
+                $singleMail[] = $email;
+            }
+            if(empty($url_emails)){
+                return response()->json(['response'=> 'No email associated with selected url']);
+            }
+            Log::info($singleMail);
+            return response()->json(['res' => $singleMail]);
         } catch (\Throwable $th) {
             throw new $th;
         }

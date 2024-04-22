@@ -20,19 +20,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($mail as $url)
                     <tr>
-                        <td><a href="" style="color: whitesmoke;">{{urldecode($url->EventURL)}}</a></td>
-                        <td>{{$url->EventStatusCode}}</td>
+                        <td><a href="" style="color: whitesmoke;">{{($URLstatus)}}</a></td>
                     </tr>
-                    @endforeach
 
                 </tbody>
             </table>
         </div>
         <br>
         <div>
-            Monthly Report as of : {{$currentDate}}
+            {{$currentDate}}
         </div>
     </div>
 </body>

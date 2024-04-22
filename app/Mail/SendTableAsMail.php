@@ -13,14 +13,14 @@ use Illuminate\Queue\SerializesModels;
 class SendTableAsMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $mail;
+    public $URLstatus;
     public $currentDate;
     /**
      * Create a new message instance.
      */
-    public function __construct($mail, $currentDate)
+    public function __construct($URLstatus, $currentDate)
     {
-        $this->mail = $mail;
+        $this->URLstatus = $URLstatus;
         $this->currentDate = $currentDate;
     }
 
@@ -31,7 +31,7 @@ class SendTableAsMail extends Mailable
     {
         return new Envelope(
             from: new Address('lagrosaedrian06@gmail.com', 'MediaOnePH'),
-            subject: 'Monthly Report',
+            subject: 'URL Status',
         );
     }
 
@@ -41,7 +41,7 @@ class SendTableAsMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'monthlyReport',
+            view: 'MailDownSites',
         );
     }
 

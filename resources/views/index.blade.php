@@ -87,6 +87,7 @@
     </script>
 
     <script>
+        console.log('asd');
         const statuscode = {
             100: 'Continue',
             101: 'Switching Protocols',
@@ -134,25 +135,27 @@
         function getEmail(id, url){
             var token = $('meta[name="csrf-token"]').attr("content");
             $("#title").text(url);
-            $("#loadingIndicatorEmailModal").show();
             $.ajax({
                 url: 'get-email/'+id,
                 type: 'POST',
-                dataType: 'application/json',
-                success: function(response){
-                    console.log(response.response);
-                $("#loadingIndicatorEmailModal").hide();
-                    $("#debug").text(response.response);
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                datatype: 'json/application',
+                success: function(data){
+                    var email = data.res;
+                    email.forEach(emails => {
+                        
+                    });
                 },
                 error: function(error){
-                    console.error(error);
+                    console.log(error);
                 }
             })
         }
-
+       
         $(document).ready(function() {
             var emailInputCounter = 0;
-
             $("#addEmailInput").click(function() {
                 emailInputCounter++;
                 var emailInputHtml =

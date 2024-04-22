@@ -49,7 +49,6 @@ class MailTableMonthly extends Command
                     ->pluck('email');
                     $countShit = 0;
                     foreach ($url_emails as $singleMail) {
-                        $countShit++;
                         $sendTo = $singleMail;
                         Urlcs::where('id', $url->id)->update(['status' => $status]);
                         if($statusCode == 4 || $statusCode == 5){
@@ -63,7 +62,6 @@ class MailTableMonthly extends Command
                     }
                 }
             }
-            $this->info($countShit);
             $this->info(' ');
             $this->info('Command finish');
         } catch (\Throwable $th) {

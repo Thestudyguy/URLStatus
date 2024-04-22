@@ -129,42 +129,42 @@ class URLController extends Controller
             throw $th;
         }
     }
-    public function sendMonthlyReport()
-    {
-       // $this->info('Checking url...');
-        //$this->info(' ');
-        $currentDate = date('l, F j, Y');
-        try {
-            $individualEmail = [];
-            $data = Urlcs::all();
-            foreach ($data as $url) {
-                $status = Http::get($url->url)->status();
-                $statusCode = substr($status, 0, 1);
-                
-                if ($status != $url->status) {
-                    $url_emails = DB::table('emails')
-                    ->where('url', $url->id)
-                    ->pluck('email');
-                    foreach ($url_emails as $singleMail) {
-                        $sendTo = $singleMail;
-                        Urlcs::where('id', $url->id)->update(['status' => $status]);
-                        if($statusCode == 4 || $statusCode == 5){
-                            $URLstatus = (' url '.$url->url. ' Status went from '.$url->status.' to '.$status);
-                            //$this->info("notify client with this client error = {$url->url} = {$status} emails {$singleMail}");
-                            Mail::to($sendTo)->send(new SendTableAsMail($URLstatus, $currentDate));
-                            return response()->json(['response'=>'working']);
-                        }else{
-                           //$this->info('we good for now my g');
-                        }
-                    }
-                }
-            }
-            //$this->info(' ');
-            //$this->info('Command finish');
-        } catch (\Throwable $th) {
-            throw $th;
-        }
-    }
+    //public function sendMonthlyReport()
+    //{
+    //   // $this->info('Checking url...');
+    //    //$this->info(' ');
+    //    $currentDate = date('l, F j, Y');
+    //    try {
+    //        $individualEmail = [];
+    //        $data = Urlcs::all();
+    //        foreach ($data as $url) {
+    //            $status = Http::get($url->url)->status();
+    //            $statusCode = substr($status, 0, 1);
+    //            
+    //            if ($status != $url->status) {
+    //                $url_emails = DB::table('emails')
+    //                ->where('url', $url->id)
+    //                ->pluck('email');
+    //                foreach ($url_emails as $singleMail) {
+    //                    $sendTo = $singleMail;
+    //                    Urlcs::where('id', $url->id)->update(['status' => $status]);
+    //                    if($statusCode == 4 || $statusCode == 5){
+    //                        $URLstatus = (' url '.$url->url. ' Status went from '.$url->status.' to '.$status);
+    //                        //$this->info("notify client with this client error = {$url->url} = {$status} emails {$singleMail}");
+    //                        Mail::to($sendTo)->send(new SendTableAsMail($URLstatus, $currentDate));
+    //                        return response()->json(['response'=>'working']);
+    //                    }else{
+    //                       //$this->info('we good for now my g');
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        //$this->info(' ');
+    //        //$this->info('Command finish');
+    //    } catch (\Throwable $th) {
+    //        throw $th;
+    //    }
+    //}
     
 
     public function GetEmail($id){

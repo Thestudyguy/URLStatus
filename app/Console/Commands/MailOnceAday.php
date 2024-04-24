@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\Mail;
 use App\Console\Commands\SendEmail;
 use Illuminate\Support\Facades\DB;
 
-class MailTableMonthly extends Command
+class MailOnceAday extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:mail-table-monthly';
+    protected $signature = 'app:mail-once-aday';
 
     /**
      * The console command description.
@@ -42,7 +42,6 @@ class MailTableMonthly extends Command
             foreach ($data as $url) {
                 $status = Http::get($url->url)->status();
                 $statusCode = substr($status, 0, 1);
-                
                 if ($status != $url->status) {
                     $url_emails = DB::table('emails')
                     ->where('url', $url->id)
@@ -51,11 +50,12 @@ class MailTableMonthly extends Command
                     foreach ($url_emails as $singleMail) {
                         $sendTo = $singleMail;
                         Urlcs::where('id', $url->id)->update(['status' => $status]);
-                        if($statusCode == 4 || $statusCode == 5){
-                            $URLstatus = (' url '.$url->url. ' Status went from '.$url->status.' to '.$status);
+                        if($statusCode == 2){
+                            $URLstatus = (' url '.$url->url. ' Status went from '.$url->status.' to '.$status. 'its good now dont worry baby girl ^^');
+                            $this->info($URLstatus);
                             Mail::to($sendTo)->send(new SendTableAsMail($URLstatus, $currentDate));
                         }else{
-                           $this->info('we good for now my g');
+                            return response()->json(['response'=> 'Some of the url went bad']);
                         }
                     }
                 }
@@ -66,26 +66,4 @@ class MailTableMonthly extends Command
             throw $th;
         }
     }
-    //comment of shame
-    //public function GetArrays($old, $new){
-    //    foreach ($old as $oldUrl) {
-    //        $newUrl = $this->findUrlById($new, $oldUrl->id);
-    //        $this->info('old = '.$oldUrl);
-    //        $this->info('new = '.$newUrl);
-    //        if ($oldUrl->status != $newUrl->status) {
-    //            // Status has changed, do something
-    //            return $this->info("Status changed for URL with ID {$oldUrl->url}");
-    //        }
-    //    }
-    //}
-    
-    //private function findUrlById($urls, $id) {
-    //    foreach ($urls as $url) {
-    //        if ($url->id == $id) {
-    //            return $url;
-    //        }
-    //    }
-    //    return null;
-    //}
-    
 }

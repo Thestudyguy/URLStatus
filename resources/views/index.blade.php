@@ -87,7 +87,6 @@
     </script>
 
     <script>
-        console.log('asd');
         const statuscode = {
             100: 'Continue',
             101: 'Switching Protocols',

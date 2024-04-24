@@ -21,6 +21,17 @@ class URLController extends Controller
             $emails = $request->email;
             $response = Http::get($url);
             $status = $response->status();
+
+            $validator = Validator::make($request->all(), [
+                'url' => 'required|url',
+                'email' => 'required|array',
+                'email.*' => 'email',
+            ]);
+        
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+
             foreach ($emails as $mail) {
                 $email[] = $mail;
             }
@@ -33,7 +44,10 @@ class URLController extends Controller
                 $url_id = $uid->id;
                 Log::info($email);
 
+
+                
                 foreach ($email as $singleEmail) {
+                    
                     Emails::create([
                         'email' => $singleEmail,
                         'url' => $url_id

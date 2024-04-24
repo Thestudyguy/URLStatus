@@ -53,13 +53,16 @@
                         </tr>
                     </thead>
                     <tbody id="table-body">
+                        <div class="spinner-border text-secondary" role="status" id="loadingIndicatorTable"
+                            style="display: none; align-items: center; justify-content: center; font-size: 12px;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
                         @include('table')
                     </tbody>
-
                 </table>
             </div>
             <div class="card-footer">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#urlemailModal">Add New</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#urlemailModal" id="addNew">Add New</button>
                 @include('modal')
                 @include('email')
                 @include('url_email')
@@ -87,6 +90,11 @@
     </script>
 
     <script>
+
+       // $("#addNew").on('click', function(){
+       //     $('#urlemailModal button#addEmailInput').click();
+       // })
+
         const statuscode = {
             100: 'Continue',
             101: 'Switching Protocols',
@@ -130,31 +138,31 @@
             505: 'HTTP Version Not Supported',
             525: 'SSL Handshake Failed'
         };
-        
-        function getEmail(id, url){
+
+        function getEmail(id, url) {
             var token = $('meta[name="csrf-token"]').attr("content");
             $("#title").text(url);
             $.ajax({
-                url: 'get-email/'+id,
+                url: 'get-email/' + id,
                 type: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': token
                 },
                 datatype: 'json/application',
-                success: function(data){
+                success: function(data) {
                     var email = data.res;
                     email.forEach(emails => {
-                        
+
                     });
                 },
-                error: function(error){
+                error: function(error) {
                     console.log(error);
                 }
             })
         }
-       
+
         $(document).ready(function() {
-            var emailInputCounter = 0;
+                var emailInputCounter = 1;
             $("#addEmailInput").click(function() {
                 emailInputCounter++;
                 var emailInputHtml =
@@ -166,6 +174,14 @@
                     '</div>';
                 $("#emailInputs").append(emailInputHtml);
                 $("#emailInputGroup_" + emailInputCounter).hide().slideDown();
+                console.log(emailInputCounter);
+                if(emailInputCounter == 4){
+                   return alert("one more input and you'll the input reach the limit");
+                }
+                if(emailInputCounter == 5){
+                   alert("limit reached bitch ass nigga");
+                   return $("#addEmailInput").attr("disabled", "true");
+                }
             });
             window.removeEmailInput = function(inputId) {
                 $("#emailInputGroup_" + inputId).fadeOut(function() {
@@ -179,18 +195,27 @@
                 const url = document.getElementById('url').value;
                 $('input[name="email[]"]').each(function() {
                     emails.push($(this).val());
-                   
+
                 });
-                var isEmpty = emails.some((email)=>{
+                var isEmpty = emails.some((email) => {
                     return email.trim() == '';
                 });
-                if(isEmpty && url.trim() == ''){
-                    console.log('email & url empty', emails);
-                }
-               else if(isEmpty){
+                if (isEmpty && url.trim() == '') {
+                    $('#url').css('border-color', 'red');
+                    $('#res').text('Please enter a URL');
+                    $('input[name="email[]"]').each(function() {
+                        $('.emailInput').css('border-color', 'red');
+                     });
+                    setTimeout(() => {
+                        $('#url').css('border-color', 'red');
+                        $('#res').text('Please enter a URL');
+                    }, 2500);
+                } else if (isEmpty) {
                     console.log('email is empty', emails);
-                }
-                else if(url.trim()== ''){
+                    $('input[name="email[]"]').each(function() {
+                        $('.emailInput').css('border-color', 'red');
+                     });
+                } else if (url.trim() == '') {
                     console.log('url is empty');
                     $('#url').css('border-color', 'red');
                     $('#res').text('Please enter a URL');
@@ -199,11 +224,7 @@
                         $('#res').text('Please enter a URL');
                     }, 2500);
 
-                }
-                else if(emailInputCounter == 0){
-                    $("#emptyAlert").removeAttr('hidden');
-                }
-                else{
+                } else {
                     var token = $('meta[name="csrf-token"]').attr("content");
                     $.ajax({
                         url: 'store-data',
@@ -214,50 +235,38 @@
                             url: url
                         },
                         dataType: 'json/application',
-                        success: function(data){
+                        success: function(data) {
                             console.log(data.response);
                             console.log('done');
                         },
-                        error: function(error){
-                            console.error(error);
+                        error: function(error) {
+                            console.log(error);
                         }
                     })
+                }
+                function listURL() {
+                    $.ajax({
+                        url: '/list-url',
+                        type: 'GET',
+                        success: function(url) {
+                            var urlLists = $('#table-body');
+                            urlLists.html(url);
+                        },
+                        error: function(error) {
+                            console.log(error);
+                            $('#errorAlert').removeAttr('hidden');
+                        }
+                    });
                 }
             };
         });
 
-        
-        $("#proceedWithOutEmail").click(function(){
+
+        $("#proceedWithOutEmail").click(function() {
             console.log('proceed');
         });
-        
-        function saveURLandEmail() {
-            var token = $('meta[name="csrf-token"]').attr("content");
-            var email = $("#insertMail").val();
-            var url = $("#url").val();
-            var mailpatt = /([a-zA-Z0-9]+)([\_\.\-{1}]?)([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/gi;
-            var res = email.match(mailpatt);
-            $.ajax({
-                url: 'store-data',
-                type: 'POST',
-                data: {
-                    url: url,
-                    email: res,
-                    _token: token
-                },
-                datatype: 'json/application',
-                success: function(data) {
-                    console.log(data.response);
-                    console.log(data.email);
-                },
-                error: function(error) {
-                    console.log('something went wrong');
-                }
 
-            })
-            //https://www.novogene.com/us-en/
-            // edrian@gmail.com ruinze@gmail.com vlagria3@gmail.com
-        }
+        
 
 
         $(document).ready(function() {
@@ -301,6 +310,7 @@
 
         function filter(code) {
             var csrfToken = $('meta[name="csrf-token"]').attr("content");
+            $("#loadingIndicatorTable").show();
             $.ajax({
                 url: 'filter-url',
                 type: 'POST',
@@ -310,6 +320,7 @@
                 },
                 dataType: 'json',
                 success: function(response) {
+                    $("#loadingIndicatorTable").hide();
                     var res = response.response;
                     var emptyRes = '<tr><td colspan="5">No matching data</td></tr>';
                     if (res.length <= 0) {
@@ -352,14 +363,14 @@
                         var app = `<tr> <td>${urls}</td>
                                     <td>${statusInfo}</td> 
                                     <td><span class='badge text-bg-danger p-2' onclick="getUrlID('${url.id}','${urls}')" style="cursor: pointer" data-toggle="modal" data-target="#exampleModal">remove</span></td>
-                                    <td><span class='badge text-bg-primary p-2' onclick="getEmailID('${url.id}','${urls}')" style="cursor: pointer" data-toggle="modal" data-target="#exampleModal">email</span></td>
-                                    <tr>
+                                    </tr>
                                     `
                         $("#table-body").append(app);
                     })
                 },
                 error: function(error) {
-                    $('#errorAlert').removeAttr('hidden');
+                    console.log(error.errors);
+                    $("#exampleModalLabel").text(error.errors);
                 },
             });
         }

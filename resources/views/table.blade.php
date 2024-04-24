@@ -85,10 +85,6 @@
                     style="cursor: pointer" data-toggle="modal" data-target="#exampleModal">remove</span>
                    
                 </td>
-                <td>
-                <span class="badge text-bg-primary p-2" data-toggle="modal" data-target="#emailModal"
-                    style="cursor: pointer" onclick="getEmail('{{ $list->id }}', '{{ $list->url }}')">email</span>
-                </td>
         </tr>
     @endif
 @endforeach

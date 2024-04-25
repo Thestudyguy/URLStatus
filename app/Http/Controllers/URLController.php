@@ -15,50 +15,46 @@ use Illuminate\Support\Facades\Validator;
 class URLController extends Controller
 {
 
-    public function storeEmailandURL(Request $request){
-            $email = [];
-            $url = $request->url;
-            $emails = $request->email;
-            $response = Http::get($url);
-            $status = $response->status();
-
-            $validator = Validator::make($request->all(), [
-                'url' => 'required|url',
-                'email' => 'required|array',
-                'email.*' => 'email',
-            ]);
-        
-            if ($validator->fails()) {
-                return response()->json(['errors' => $validator->errors()], 400);
-            }
-
-            foreach ($emails as $mail) {
-                $email[] = $mail;
-            }
-            $isURLExisting = Urlcs::where('url', $url)->first();
-            if(!$isURLExisting){
-                $uid = Urlcs::create([
-                    'url' => $url,
-                    'status' => $status
-                ]);
-                $url_id = $uid->id;
-                Log::info($email);
-
-
-                
-                foreach ($email as $singleEmail) {
-                    
-                    Emails::create([
-                        'email' => $singleEmail,
-                        'url' => $url_id
-                    ]);
-                }
-
-                return response()->json(['response' => $url, 'status' => $status, 'proxyID' => $uid, 'email' => $email], 200);
-            }else {
-                return response()->json(['isExisting' => 'url already exists', 'status' => $status]);
-            }
+    public function storeEmailandURL(Request $request)
+{
+    $url = $request->url;
+    $emails = $request->email;
+    $response = Http::get($url);
+    $status = $response->status();
+    $Emailregex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'; 
+    $urlPattern = "/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i";
+    if (!preg_match($urlPattern, $url)) {
+        $urlErr = $url;
+        return response()->json(['invalid' => 'Invalid URL: '.$url], 400);
     }
+    $emailErrors = [];
+    foreach ($emails as $singleEmail) {
+        if (!preg_match($Emailregex, $singleEmail)) {
+            $emailErrors[] = 'invalid email: ' . $singleEmail;
+        }
+    }
+    if (!empty($emailErrors)) {
+        return response()->json(['invalid' => $emailErrors], 400);
+    }
+    $isURLExisting = Urlcs::where('url', $url)->first();
+    if (!$isURLExisting) {
+        $uid = Urlcs::create([
+            'url' => $url,
+            'status' => $status
+        ]);
+        $url_id = $uid->id;
+        foreach ($emails as $singleEmail) {
+            Emails::create([
+                'email' => $singleEmail,
+                'url' => $url_id
+            ]);
+        }
+        return response()->json(['response' => $url, 'status' => $status, 'proxyID' => $uid, 'email' => $emails], 200);
+    } else {
+        return response()->json(['invalid' => 'URL already exists'], 400);
+    }
+}
+
 
 
     public function getURL()

@@ -90,11 +90,19 @@
     </script>
 
     <script>
+        $(document).ready(function() {
+    $('#urlemailModal').on('hidden.bs.modal', function() {
 
-       // $("#addNew").on('click', function(){
-       //     $('#urlemailModal button#addEmailInput').click();
-       // })
-
+        $('#url').val('');
+        $('#emailInputs').html(`
+            <div class="input-group mt emailInput" id="emailInputGroup_1">
+                <input type="email" class="form-control emailInput" placeholder="Enter Email" name="email[]" required>
+                <button class="btn btn-outline-danger px-3" id="testID" type="button" onclick="removeEmailInput(1)">Remove</button>
+            </div>
+        `);
+        $('#alertforURLandEmail').addClass('visually-hidden');
+    });
+});
         const statuscode = {
             100: 'Continue',
             101: 'Switching Protocols',
@@ -152,7 +160,6 @@
                 success: function(data) {
                     var email = data.res;
                     email.forEach(emails => {
-
                     });
                 },
                 error: function(error) {
@@ -160,6 +167,8 @@
                 }
             })
         }
+
+        
 
         $(document).ready(function() {
                 var emailInputCounter = 1;
@@ -169,17 +178,14 @@
                     '<div class="input-group mt-2 emailInputWrapper" id="emailInputGroup_' +
                     emailInputCounter + '">' +
                     '<input type="email" class="form-control emailInput" placeholder="Enter Email" name="email[]" required>' +
-                    '<button class="btn btn-outline-danger" type="button" onclick="removeEmailInput(' +
+                    '<button class="btn btn-outline-danger px-3" type="button" onclick="removeEmailInput(' +
                     emailInputCounter + ')">Remove</button>' +
                     '</div>';
                 $("#emailInputs").append(emailInputHtml);
                 $("#emailInputGroup_" + emailInputCounter).hide().slideDown();
                 console.log(emailInputCounter);
-                if(emailInputCounter == 4){
-                   return alert("one more input and you'll the input reach the limit");
-                }
                 if(emailInputCounter == 5){
-                   alert("limit reached bitch ass nigga");
+                   alert("You reached the maximum limit for each url. Do not try this again, punishable by death.");
                    return $("#addEmailInput").attr("disabled", "true");
                 }
             });
@@ -187,19 +193,30 @@
                 $("#emailInputGroup_" + inputId).fadeOut(function() {
                     $(this).remove();
                 });
+                emailInputCounter--;
             };
-            window.saveURLandEmail = function() {
-                var emails = [];
+            
+            
+        });
+
+
+        function saveURLandEmail(){
+            var emails = [];
                 var emailInputFlag = true;
                 var urlInputFlag = true;
+                var emailPattern = /([a-zA-Z0-9]+)([\_\.\-{1}]?)([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/gi;
+                var urlRegex = /\b(?:https?|ftp):\/\/\S+\b/g;
                 const url = document.getElementById('url').value;
                 $('input[name="email[]"]').each(function() {
                     emails.push($(this).val());
 
                 });
+
                 var isEmpty = emails.some((email) => {
                     return email.trim() == '';
                 });
+
+
                 if (isEmpty && url.trim() == '') {
                     $('#url').css('border-color', 'red');
                     $('#res').text('Please enter a URL');
@@ -225,7 +242,9 @@
                     }, 2500);
 
                 } else {
+                $("#loadingIndicatorSave").show();
                     var token = $('meta[name="csrf-token"]').attr("content");
+                    $("#saveBtn").addClass("disabled");
                     $.ajax({
                         url: 'store-data',
                         type: 'POST',
@@ -236,31 +255,23 @@
                         },
                         dataType: 'json/application',
                         success: function(data) {
-                            console.log(data.response);
-                            console.log('done');
+                            $("#loadingIndicatorSave").hide();
+                            $("#saveBtn").removeClass("disabled");
+                            $('#urlemailModal button[class="btn btn-secondary"]').click();
                         },
-                        error: function(error) {
-                            console.log(error);
+                        error: (error) => {
+                            $("#loadingIndicatorSave").hide();
+                            var res = Object.values(error);
+                            var invalid = JSON.parse(res[16]);
+                            $("#alertforURLandEmail").removeClass('visually-hidden');
+                            $("#reqStatus").text(invalid.invalid);
+                            $("#saveBtn").removeClass("disabled");
+                            
                         }
                     })
                 }
-                function listURL() {
-                    $.ajax({
-                        url: '/list-url',
-                        type: 'GET',
-                        success: function(url) {
-                            var urlLists = $('#table-body');
-                            urlLists.html(url);
-                        },
-                        error: function(error) {
-                            console.log(error);
-                            $('#errorAlert').removeAttr('hidden');
-                        }
-                    });
-                }
-            };
-        });
-
+                
+        }
 
         $("#proceedWithOutEmail").click(function() {
             console.log('proceed');
@@ -280,9 +291,7 @@
                 },
                 contentType: 'application/json',
                 success: function(response) {
-                    console.log(response.asd);
                     if (response.status) {
-                        console.log(response.status);
                         $.each(response.status, (index, status) => {
                             var selectEl = $("#filterStatus");
                             var appOption = `<option value="${status}">${status}</option>`;

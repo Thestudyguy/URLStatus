@@ -62,10 +62,30 @@
                 </table>
             </div>
             <div class="card-footer">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#urlemailModal" id="addNew">Add New</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#urlemailModal" id="addNew">Add
+                    New</button>
                 @include('modal')
                 @include('email')
                 @include('url_email')
+            </div>
+        </div>
+        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" style="overflow: hidden: width: fit-content;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Newly Added URL</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="" id="url_info">
+                            <div class="" id="url_status"></div>
+                            <div class="" id="url_text"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <p class="text-secondary" style="font-size: 12px">click anywhere to dismiss</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -91,18 +111,19 @@
 
     <script>
         $(document).ready(function() {
-    $('#urlemailModal').on('hidden.bs.modal', function() {
-
-        $('#url').val('');
-        $('#emailInputs').html(`
+            $('#urlemailModal').on('hidden.bs.modal', function() {
+                $('#url').val('');
+                $("#url").css("border-color", "");
+                $('#emailInputs').html(`
             <div class="input-group mt emailInput" id="emailInputGroup_1">
                 <input type="email" class="form-control emailInput" placeholder="Enter Email" name="email[]" required>
                 <button class="btn btn-outline-danger px-3" id="testID" type="button" onclick="removeEmailInput(1)">Remove</button>
             </div>
         `);
-        $('#alertforURLandEmail').addClass('visually-hidden');
-    });
-});
+                $('#mdlAlrt').addClass('visually-hidden');
+            });
+
+        });
         const statuscode = {
             100: 'Continue',
             101: 'Switching Protocols',
@@ -159,19 +180,18 @@
                 datatype: 'json/application',
                 success: function(data) {
                     var email = data.res;
-                    email.forEach(emails => {
-                    });
+                    email.forEach(emails => {});
                 },
                 error: function(error) {
-                    console.log(error);
                 }
             })
         }
 
-        
+
 
         $(document).ready(function() {
-                var emailInputCounter = 1;
+            let emailInputCounter = 1;
+
             $("#addEmailInput").click(function() {
                 emailInputCounter++;
                 var emailInputHtml =
@@ -183,101 +203,150 @@
                     '</div>';
                 $("#emailInputs").append(emailInputHtml);
                 $("#emailInputGroup_" + emailInputCounter).hide().slideDown();
-                console.log(emailInputCounter);
-                if(emailInputCounter == 5){
-                   alert("You reached the maximum limit for each url. Do not try this again, punishable by death.");
-                   return $("#addEmailInput").attr("disabled", "true");
+                if (emailInputCounter == 5) {
+                    alert(
+                        "You reached the maximum limit for email."
+                    );
+                    return $("#addEmailInput").attr("disabled", "true");
                 }
             });
+
             window.removeEmailInput = function(inputId) {
                 $("#emailInputGroup_" + inputId).fadeOut(function() {
                     $(this).remove();
                 });
                 emailInputCounter--;
             };
-            
-            
+
+            $('#urlemailModal').on('hidden.bs.modal', function() {
+                emailInputCounter = 1;
+            });
         });
 
 
-        function saveURLandEmail(){
+        function saveURLandEmail() {
             var emails = [];
-                var emailInputFlag = true;
-                var urlInputFlag = true;
-                var emailPattern = /([a-zA-Z0-9]+)([\_\.\-{1}]?)([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/gi;
-                var urlRegex = /\b(?:https?|ftp):\/\/\S+\b/g;
-                const url = document.getElementById('url').value;
-                $('input[name="email[]"]').each(function() {
-                    emails.push($(this).val());
+            var token = $('meta[name="csrf-token"]').attr("content");
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const urlPattern = /\b(?:https?|ftp):\/\/[-A-Za-z0-9+&@#\/%?=~_|!:,.;]*[-A-Za-z0-9+&@#\/%=~_|]/;
 
-                });
-
-                var isEmpty = emails.some((email) => {
-                    return email.trim() == '';
-                });
-
-
-                if (isEmpty && url.trim() == '') {
-                    $('#url').css('border-color', 'red');
-                    $('#res').text('Please enter a URL');
-                    $('input[name="email[]"]').each(function() {
-                        $('.emailInput').css('border-color', 'red');
-                     });
-                    setTimeout(() => {
-                        $('#url').css('border-color', 'red');
-                        $('#res').text('Please enter a URL');
-                    }, 2500);
-                } else if (isEmpty) {
-                    console.log('email is empty', emails);
-                    $('input[name="email[]"]').each(function() {
-                        $('.emailInput').css('border-color', 'red');
-                     });
-                } else if (url.trim() == '') {
-                    console.log('url is empty');
-                    $('#url').css('border-color', 'red');
-                    $('#res').text('Please enter a URL');
-                    setTimeout(() => {
-                        $('#url').css('border-color', 'red');
-                        $('#res').text('Please enter a URL');
-                    }, 2500);
-
-                } else {
-                $("#loadingIndicatorSave").show();
-                    var token = $('meta[name="csrf-token"]').attr("content");
-                    $("#saveBtn").addClass("disabled");
-                    $.ajax({
-                        url: 'store-data',
-                        type: 'POST',
-                        data: {
-                            _token: token,
-                            email: emails,
-                            url: url
-                        },
-                        dataType: 'json/application',
-                        success: function(data) {
-                            $("#loadingIndicatorSave").hide();
-                            $("#saveBtn").removeClass("disabled");
-                            $('#urlemailModal button[class="btn btn-secondary"]').click();
-                        },
-                        error: (error) => {
-                            $("#loadingIndicatorSave").hide();
-                            var res = Object.values(error);
-                            var invalid = JSON.parse(res[16]);
-                            $("#alertforURLandEmail").removeClass('visually-hidden');
-                            $("#reqStatus").text(invalid.invalid);
-                            $("#saveBtn").removeClass("disabled");
-                            
-                        }
-                    })
+            const url = $('#url').val();
+            $('input[name="email[]"]').each(function() {
+                var email = $(this).val().trim();
+                if (email) {
+                    emails.push(email);
                 }
-                
+            });
+
+            if (!urlPattern.test(url)) {
+                $('#url').css('border-color', 'red');
+                $('#res').text('Please enter a valid URL');
+                return;
+            } else {
+                $('#url').css('border-color', '');
+            }
+
+            if (emails.length === 0) {
+                $('input[name="email[]"]').css('border-color', 'red');
+                return;
+            } else {
+                $('input[name="email[]"]').css('border-color', '');
+            }
+
+            var invalidEmails = emails.filter(email => !emailPattern.test(email));
+            if (invalidEmails.length > 0) {
+                $('input[name="email[]"]').each(function(index) {
+                    if (invalidEmails.includes($(this).val().trim())) {
+                        $(this).css('border-color', 'red');
+                    }
+                });
+                return;
+            } else {
+                $('input[name="email[]"]').css('border-color', '');
+            }
+
+            $("#saveBtn").addClass("disabled");
+            $("#samText").text("processing");
+            $("#loadingIndicatorSave").show();
+
+            $.ajax({
+                url: 'store-data',
+                type: 'POST',
+                data: {
+                    _token: token,
+                    email: emails,
+                    url: url
+                },
+                dataType: 'json',
+                success: function(data) {
+                    var statChar = data.status;
+                    var statusInfo = statuscode[data.status] || "Unknown";
+                    $("#saveBtn").removeClass("disabled");
+                    $("#samText").text("Scan & save");
+                    $("#loadingIndicatorSave").hide();
+                    $("#mdlAlrt").removeClass('visually-hidden');
+                    $("#mdlAlrt").addClass('alert-success');
+                    $("#alertTitle").text("URL Added");
+                    $('#pasText').text('New URL Added');
+
+                    setTimeout(() => {
+                        $("#urlemailModal button#closeSaveModal").click();
+                        $("#infoModal").modal('show');
+                        $("#url_status").html(`URL: <a href='${data.url}'>${data.url}</a>`);
+                        var append = ``;
+                        var statusInfo = statuscode[data.status] || 'Unknown';
+                        switch (true) {
+                            case data.character == '1':
+                                append = `<span class="badge text-bg-secondary" style="cursor: pointer" title="${statusInfo}">${data.status} ${statusInfo}</span>`
+                                break;
+                            case data.character == '2':
+                                append = `<span class="badge text-bg-success" style="cursor: pointer" title="${statusInfo}">${data.status} ${statusInfo}</span>`
+                                break;
+                            case data.character == '3':
+                                append = `<span class="badge text-bg-info" style="cursor: pointer" title="${statusInfo}">${data.status} ${statusInfo}</span>`
+                                break;
+                            case data.character == '4':
+                                append = `<span class="badge text-bg-warning" style="cursor: pointer" title="${statusInfo}">${data.status} ${statusInfo}</span>`
+                                break;
+                            case data.character == '5':
+                                append = `<span class="badge text-bg-danger" style="cursor: pointer" title="${statusInfo}">${data.status} ${statusInfo}</span>`
+                                break;
+                            default:
+                                append = `<span class="badge text-bg-dark" style="cursor: pointer" title="${statusInfo}">${data.status} ${statusInfo}</span>`
+                            break;
+                        }
+                        $("#url_text").html(`Status: ${append}`);
+                    }, 2000);
+
+                    listURL();
+                },
+                error: function(xhr, status, error) {
+                    var errorMessage = xhr.responseJSON ? xhr.responseJSON.error : 'Unknown error';
+                    $("#saveBtn").removeClass("disabled");
+                    $("#samText").text("Scan & save");
+                    $("#loadingIndicatorSave").hide();
+                    $("#mdlAlrt").removeClass('visually-hidden');
+                    $("#mdlAlrt").addClass('alert-danger');
+                    $("#alertTitle").text("Error");
+                    $('#pasText').text(errorMessage);
+                }
+            });
         }
 
-        $("#proceedWithOutEmail").click(function() {
-            console.log('proceed');
-        });
+        function listURL() {
+            $.ajax({
+                url: '/list-url',
+                type: 'GET',
+                success: function(url) {
+                    var urlLists = $('#table-body');
+                    urlLists.html(url);
+                },
+                error: function(error) {
+                    $('#errorAlert').removeAttr('hidden');
+                }
+            });
+        }
 
-        
 
 
         $(document).ready(function() {
@@ -341,8 +410,6 @@
                         var urls = url.url;
                         var toIntStat = parseInt(stat);
                         var statusInfo = statuscode[stat] || "Unknown";
-                        console.log(typeof(stat));
-                        console.log(stat.charAt(0));
                         switch (true) {
                             case stat.charAt(0) === '1':
                                 statusInfo =
@@ -378,63 +445,11 @@
                     })
                 },
                 error: function(error) {
-                    console.log(error.errors);
                     $("#exampleModalLabel").text(error.errors);
                 },
             });
         }
 
-        function scanURL() {
-            var csrfToken = $('meta[name="csrf-token"]').attr("content");
-            const url = document.getElementById('url').value;
-            if (url.trim() === '') {
-                $('#res').text('Please enter a URL')
-                $('#res').css('color', '#F50057')
-                $('#url').css('border-color', 'red')
-
-                setTimeout(() => {
-                    $('#url').css('border-color', '')
-                    $('#res').css('color', '')
-                    $('#res').text('Result:')
-                }, 2000);
-                return;
-            }
-            $('#loadingIndicator').show();
-            $.ajax({
-                url: 'scan-url',
-                type: 'GET',
-                data: {
-                    url: url,
-                    _token: csrfToken
-                },
-                datatype: 'json',
-                success: function(data) {
-                    listURL();
-                    $('#loadingIndicator').hide();
-                    $("#final-result").html(
-                        `URL Status: <span class="badge text-bg-success">${data.status}</span>`);
-                },
-                error: function(xhr, status, error) {
-                    console.log(error, xhr);
-                    $('#errorAlert').removeAttr('hidden');
-                }
-            });
-
-            function listURL() {
-                $.ajax({
-                    url: '/list-url',
-                    type: 'GET',
-                    success: function(url) {
-                        var urlLists = $('#table-body');
-                        urlLists.html(url);
-                    },
-                    error: function(error) {
-                        console.log(error);
-                        $('#errorAlert').removeAttr('hidden');
-                    }
-                });
-            }
-        }
 
         function getUrlID(id, url) {
             $("#urlRef").text(url);
@@ -478,7 +493,6 @@
                         urlLists.html(url);
                     },
                     error: function(error) {
-                        console.log(error);
                         $('#errorAlert').removeAttr('hidden');
                     }
                 });

@@ -17,44 +17,35 @@ class URLController extends Controller
 
     public function storeEmailandURL(Request $request)
 {
-    $url = $request->url;
-    $emails = $request->email;
-    $response = Http::get($url);
-    $status = $response->status();
-    $Emailregex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'; 
-    $urlPattern = "/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i";
-    if (!preg_match($urlPattern, $url)) {
-        $urlErr = $url;
-        return response()->json(['invalid' => 'Invalid URL: '.$url], 400);
-    }
-    $emailErrors = [];
-    foreach ($emails as $singleEmail) {
-        if (!preg_match($Emailregex, $singleEmail)) {
-            $emailErrors[] = 'invalid email: ' . $singleEmail;
-        }
-    }
-    if (!empty($emailErrors)) {
-        return response()->json(['invalid' => $emailErrors], 400);
-    }
-    $isURLExisting = Urlcs::where('url', $url)->first();
-    if (!$isURLExisting) {
-        $uid = Urlcs::create([
-            'url' => $url,
-            'status' => $status
-        ]);
-        $url_id = $uid->id;
-        foreach ($emails as $singleEmail) {
-            Emails::create([
-                'email' => $singleEmail,
-                'url' => $url_id
+    try {
+        $email = [];
+        $url = $request->url;
+        $emails = $request->email;
+        $response = Http::get($url);
+        $status = $response->status();
+
+        $isURLExisting = Urlcs::where('url', $url)->first();
+        if (!$isURLExisting) {
+            $urlRecord = Urlcs::create([
+                'url' => $url,
+                'status' => $status
             ]);
+            $url_id = $urlRecord->id;
+            foreach ($emails as $singleEmail) {
+                Emails::create([
+                    'email' => $singleEmail,
+                    'url' => $url_id
+                ]);
+            }
+            $statChar = substr($status, 0, 1);
+            return response()->json(['response' => "request finished", 'status' => $status, 'url' => $url, 'character' => $statChar]);
+        } else {
+            return response()->json(['error' => 'URL already exists'], 409);
         }
-        return response()->json(['response' => $url, 'status' => $status, 'proxyID' => $uid, 'email' => $emails], 200);
-    } else {
-        return response()->json(['invalid' => 'URL already exists'], 400);
+    } catch (\Throwable $th) {
+        return response()->json(['error' => $th->getMessage()], 500);
     }
 }
-
 
 
     public function getURL()
@@ -74,7 +65,7 @@ class URLController extends Controller
         $body = $response->body();
         $headers = $response->headers();
         try {
-                return response()->json(['body' => $body, 'response' => $url, 'status' => $status], 200);
+            return response()->json(['body' => $body, 'response' => $url, 'status' => $status], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -127,7 +118,7 @@ class URLController extends Controller
             throw $th;
         }
     }
-    
+
     public function getStatus()
     {
         try {
@@ -175,19 +166,20 @@ class URLController extends Controller
     //        throw $th;
     //    }
     //}
-    
 
-    public function GetEmail($id){
+
+    public function GetEmail($id)
+    {
         $singleMail = [];
         try {
             $url_emails = DB::table('emails')
-            ->where('url', $id)
-            ->pluck('email');
+                ->where('url', $id)
+                ->pluck('email');
             foreach ($url_emails as $email) {
                 $singleMail[] = $email;
             }
-            if(empty($url_emails)){
-                return response()->json(['response'=> 'No email associated with selected url']);
+            if (empty($url_emails)) {
+                return response()->json(['response' => 'No email associated with selected url']);
             }
             Log::info($singleMail);
             return response()->json(['res' => $singleMail]);

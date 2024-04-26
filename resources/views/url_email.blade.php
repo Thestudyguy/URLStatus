@@ -7,12 +7,13 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div id="alertforURLandEmail" class="alert visually-hidden alert-danger alert-dismissible fade show" data-dismiss="alert">
-        <strong><div id="reqStatus"></div></strong>
+      <div class="alert visually-hidden m-3" id="mdlAlrt">
+        <strong><div id="alertTitle"></div></strong>
+        <div style="font-size: 12px;" id="pasText"></div>
       </div>
       <div class="modal-body">
          <div class="input-group">
-          <input type="text" class="form-control @error('title') is-invalid @enderror" placeholder="Enter URL" name="url" id="url">
+          <input type="text" class="form-control" placeholder="Enter URL" name="url" id="url">
         </div>
         <hr>
         <div id="emailInputs" class="mt-3">
@@ -29,9 +30,8 @@
         <div class="spinner-border text-secondary" role="status" id="loadingIndicatorSave" style="display: none; align-items: center; justify-content: center; font-size: 18px; width: 20px; height: 20px;">
           <span class="visually-hidden">Loading...</span>
         </div>
-        Scan & Save</button>
+        <span class="" id="samText">Scan & Save</span></button>
       </div>
     </div>
   </div>
 </div>
-<!-- i append nalang ang alert ug ang request status -->

@@ -46,7 +46,6 @@ class MailOnceAday extends Command
                     $url_emails = DB::table('emails')
                     ->where('url', $url->id)
                     ->pluck('email');
-                    $countShit = 0;
                     foreach ($url_emails as $singleMail) {
                         $sendTo = $singleMail;
                         Urlcs::where('id', $url->id)->update(['status' => $status]);
@@ -55,7 +54,8 @@ class MailOnceAday extends Command
                             $this->info($URLstatus);
                             Mail::to($sendTo)->send(new SendTableAsMail($URLstatus, $currentDate));
                         }else{
-                            return response()->json(['response'=> 'Some of the url went bad']);
+                            return $this->error('Some of the url went bad');
+                            //return response()->json(['response'=> 'Some of the url went bad']);
                         }
                     }
                 }

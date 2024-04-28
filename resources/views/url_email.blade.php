@@ -14,7 +14,9 @@
       <div class="modal-body">
          <div class="input-group">
           <input type="text" class="form-control" placeholder="Enter URL" name="url" id="url">
+          <br>
         </div>
+        <div class="" id="res"></div>
         <hr>
         <div id="emailInputs" class="mt-3">
           <div class="input-group mt emailInput" id="emailInputGroup_1">

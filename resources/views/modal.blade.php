@@ -3,9 +3,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="lead" id="exampleModalLabel">Remove Url</h5>
-          <div class="spinner-border text-secondary" role="status" id="loadingIndicatorModal" style="display: none; align-items: center; justify-content: center; font-size: 12px;">
-            <span class="visually-hidden">Loading...</span>
-        </div>
+          
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -19,7 +17,9 @@
         </center>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" onclick="removeUrl()">Remove</button>
+          <button type="button" id="removeBtn" class="btn btn-danger" onclick="removeUrl()"><div class="spinner-border text-secondary mb-1 mt-1" role="status" id="loadingIndicatorModal" style="width: 1rem; height: 1rem; border-width: 0.15em;">
+            <span class="visually-hidden">Loading...</span>
+        </div>Remove</button>
         </div>
       </div>
     </div>

@@ -54,11 +54,11 @@
                         </tr>
                     </thead>
                     <tbody id="table-body">
+                        @include('table')
                         <div class="spinner-border text-secondary" role="status" id="loadingIndicatorTable"
-                            style="display: none; align-items: center; justify-content: center; font-size: 12px;">
+                            style="display: none; align-items: center; justify-content: center; font-size: 12px; width: 1.5rem; height: 1.5rem; border-width: 0.35em; position: relative; left:50%; top:50%;">
                             <span class="visually-hidden">Loading...</span>
                         </div>
-                        @include('table')
                     </tbody>
                 </table>
             </div>
@@ -73,7 +73,7 @@
         <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content" style="overflow: hidden: width: fit-content;">
+                <div class="modal-content" style="overflow: auto;">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Newly Added URL</h5>
                     </div>

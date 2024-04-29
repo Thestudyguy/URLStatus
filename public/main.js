@@ -108,8 +108,11 @@ $(document).ready(function () {
     window.removeEmailInput = function (inputId) {
         $("#emailInputGroup_" + inputId).fadeOut(function () {
             $(this).remove();
+            emailInputCounter--;
+            if(emailInputCounter <= 5){
+                return $("#addEmailInput").removeAttr("disabled");
+            }
         });
-        emailInputCounter--;
     };
 
 });
@@ -243,6 +246,7 @@ $('#clear-filter').on('click', () => {
 function filter(code) {
     var csrfToken = $('meta[name="csrf-token"]').attr("content");
     $("#loadingIndicatorTable").show();
+    $("#table-body").empty();
     $.ajax({
         url: 'filter-url',
         type: 'POST',

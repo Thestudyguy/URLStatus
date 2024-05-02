@@ -228,7 +228,7 @@ $(document).ready(function () {
             }
         },
         error: function (error) {
-            console.error('AJAX Error:', error);
+            console.log('AJAX Error:', error);
         }
     });
 });

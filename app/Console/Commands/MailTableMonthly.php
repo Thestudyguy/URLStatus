@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use App\Mail\SendTableAsMail;
 use Illuminate\Support\Facades\Mail;
 use App\Console\Commands\SendEmail;
+use App\Models\urlhistory;
 use Illuminate\Support\Facades\DB;
 
 class MailTableMonthly extends Command
@@ -54,6 +55,17 @@ class MailTableMonthly extends Command
                         if($statusCode == 4 || $statusCode == 5){
                             $URLstatus = (' url '.$url->url. ' Status went from '.$url->status.' to '.$status);
                             Mail::to($sendTo)->send(new SendTableAsMail($URLstatus, $currentDate));
+                            if ($url->status != $status) {
+                                $this->info(' url '.$url->url. ' old stat '. $url->status. ' new stat '. $status);
+                                urlhistory::create([
+                                    'url' => $url->url,
+                                    'old_status' =>$url->status,
+                                    'new_status' =>$status,
+                                    'url_ref' => $url->id
+                                ]);
+                            }else{
+                                $this->info("No url change status ". $currentDate);
+                            }
                         }else{
                            $this->info('we good for now my g');
                         }

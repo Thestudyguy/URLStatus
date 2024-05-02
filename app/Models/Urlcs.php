@@ -13,4 +13,8 @@ class Urlcs extends Model
     public function URL() : HasMany{
         return $this->hasMany(Emails::class, 'url');
     }
+    public function URLhistory() : HasMany{
+        return $this->hasMany(urlhistory::class, 'url_ref');
+    }
+    
 }

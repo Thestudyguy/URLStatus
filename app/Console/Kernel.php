@@ -12,8 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('app:mail-table-monthly')->everyminute();//crawl the url every 6 hours to check if status went 4xx or 5xx will send an email if so
-        $schedule->command('app:mail-once-aday')->everyminute();//check if a url went other than 2xx will send email if so
+        $schedule->command('app:mail-table-monthly')->everySixHours();//crawl the url every 6 hours to check if status went 4xx or 5xx will send an email if so
+        $schedule->command('app:mail-once-aday')->daily();//check if a url went other than 2xx will send email if so
     }
 
     /**

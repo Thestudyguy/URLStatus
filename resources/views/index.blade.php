@@ -75,7 +75,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content" style="overflow: auto;">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Newly Added URL</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">New Added URL</h5>
                     </div>
                     <div class="modal-body">
                         <div class="" id="url_info">

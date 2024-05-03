@@ -55,14 +55,16 @@ class MailTableMonthly extends Command
                         if($statusCode == 4 || $statusCode == 5){
                             $URLstatus = (' url '.$url->url. ' Status went from '.$url->status.' to '.$status);
                             Mail::to($sendTo)->send(new SendTableAsMail($URLstatus, $currentDate));
+                            $this->info("mail sent to recipient");
                             if ($url->status != $status) {
                                 $this->info(' url '.$url->url. ' old stat '. $url->status. ' new stat '. $status);
-                                urlhistory::create([
+                               $histry = urlhistory::create([
                                     'url' => $url->url,
                                     'old_status' =>$url->status,
                                     'new_status' =>$status,
                                     'url_ref' => $url->id
                                 ]);
+                                $this->info('new record created in history '. $histry);
                             }else{
                                 $this->info("No url change status ". $currentDate);
                             }

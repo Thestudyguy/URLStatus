@@ -1,14 +1,19 @@
 let emailInputCounter = 1;
+$("#toastr").click(function(){
+    toastr.options.showMethod = 'slideDown';
+    toastr.options.hideMethod = 'slideUp';
+    toastr.info("New record successfuly added!", "i am clicked");
+})
 $(document).ready(function () {
     $('#urlemailModal').on('hidden.bs.modal', function () {
         $('#url').val('');
         $("#url").css("border-color", "");
         $('#emailInputs').html(`
-    <div class="input-group mt emailInput" id="emailInputGroup_1">
+        <div class="input-group mt emailInput" id="emailInputGroup_1">
         <input type="email" class="form-control emailInput" placeholder="Enter Email" name="email[]" required>
         <button class="btn btn-outline-danger px-3" id="testID" type="button" onclick="removeEmailInput(1)">Remove</button>
-    </div>
-`);
+        </div>
+        `);
         $('#mdlAlrt').addClass('visually-hidden');
         //very
         emailInputCounter = 1;

@@ -10,9 +10,16 @@ use App\Models\Emails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Hash;
 
 class URLController extends Controller
 {
+    public function logIn(){
+        return view('auth.login');
+    }
 
     public function storeEmailandURL(Request $request)
 {
@@ -143,6 +150,31 @@ class URLController extends Controller
             return response()->json(['res' => $singleMail]);
         } catch (\Throwable $th) {
             throw new $th;
+        }
+    }
+    public function register(){
+        return view('auth.register');
+    }
+    public function RegisterUser(Request $request){
+        try {
+            $request->validate([
+                "fname" => "required",
+                "lname" => "required",
+                "email" => "required|email|unique:users",
+                "password"=> "required",
+                "isUserPrivileged"=> "required"
+            ]);
+            User::create([
+                "fname" => $request->fname,
+                "lname" => $request->lname,
+                "email" => $request->email,
+                "password" => Hash::make($request->password),
+                "isUserPrivileged" => $request->isUserPrivileged,
+            ]);
+            return response()->json(['response' => 'success']);
+            return response(['msg', 'registered successfully'], 200);
+        } catch (ValidationException $e) {
+            return response(['error' => $e->validator->errors()], 422);
         }
     }
 }

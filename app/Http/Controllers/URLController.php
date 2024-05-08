@@ -6,6 +6,7 @@ use App\Models\Urlcs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Mail\SendTableAsMail;
+use App\Models\Clients;
 use App\Models\Emails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -172,9 +173,19 @@ class URLController extends Controller
                 "isUserPrivileged" => $request->isUserPrivileged,
             ]);
             return response()->json(['response' => 'success']);
-            return response(['msg', 'registered successfully'], 200);
         } catch (ValidationException $e) {
             return response(['error' => $e->validator->errors()], 422);
         }
     }
+    public function GetClients(){
+        try {
+            $clients = Clients::all();
+            return view('components.card', [
+                'clients' => [$clients]
+             ]); 
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    
 }

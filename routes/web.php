@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::middleware('isUserPrivileged')->group(function(){
+//Route::middleware('isUserPrivileged')->group(function(){
 Route::get('get-url', [URLController::class, 'getURL']);
 Route::get('list-url', [URLController::class, 'listURL']);
 Route::get('scan-url', [URLController::class, 'GetURLHeaders']);
@@ -28,5 +28,9 @@ Route::post('store-data', [URLController::class, 'storeEmailandURL']);
 Route::post('get-email/{id}', [URLController::class, 'getEmail']);
 Route::get('register', [URLController::class, 'register']);
 Route::post('register-user', [URLController::class, 'RegisterUser'])->name('registeruser');
-});
+//});
+Route::get('/pages/client', function () {
+    return view('pages.client');
+})->name('clients');
 Route::get('/', [URLController::class, 'getURL']);
+Route::get('/clients', [URLController::class, 'GetClients']);

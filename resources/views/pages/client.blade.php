@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('main.js') }}" defer></script>
-    <script src="{{ asset('add-new-client.js') }}" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,27 +16,26 @@
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}/">
-    <link rel="stylesheet" href="{{asset('style.css')}}">
-    <title>URL Status Checker</title>
+
+    <title>URL Status Checker/Clients</title>
 </head>
+<style>
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 250px;
+        padding: 20px;
+        background-color: #343a40;
+        color: #fff;
+    }
+</style>
 
 <body>
     <div class="wrapper">
         @include('components.sidebar')
         <div class="content-wrapper p-5">
-            @include('components.data')
-            @include('components.http_codes')
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title-primary">Clients</div>
-                </div>
-                <div class="card-body">
-                    @include('components.card')
-                </div>
-                <div class="card-footer">
-                    @include('components.new-client-modal')
-                </div>
-            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>

@@ -53,6 +53,7 @@ window.removeUrlInput = function (inputId) {
 
 $("#saveBtn").click(
     function() {
+        $("#overlay").show();
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
         var client = $("#client").val();
         var client_email = $("#email").val();
@@ -85,6 +86,7 @@ $("#saveBtn").click(
             },
             success: function(response){
                 console.log(response);
+                $("#overlay").hide();
             },
             error: function(xhr, status, error){
                 console.log(xhr);

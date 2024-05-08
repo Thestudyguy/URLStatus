@@ -26,11 +26,11 @@ class NewClientController extends Controller
         Log::info($client);
         Log::info($client_email);
         Log::info($client_contact);
-        //foreach ($email_array as $emails) {
-        //    //Log::info($emails);
-        //    $notify_email = $email[] = $emails;
-        //    Log::info($notify_email);
-        //}
+        foreach ($email_array as $emails) {
+            //Log::info($emails);
+            $notify_email = $email[] = $emails;
+            Log::info($notify_email);
+        }
         foreach ($url_array as $urls) {
             $pattern = '/googletagmanager\.com\/gtm\.js\?id=([^\s"\'<]+)/i';
             $patternGTM = '/GTM-([a-zA-Z0-9]+)/i';
@@ -41,8 +41,8 @@ class NewClientController extends Controller
             $gtmcode = [];
             preg_match_all($patternGTM, $body, $matches);
             foreach ($matches as $gtm) {
-               $code = $gtmcode[] = $gtm;
-               Log::info($code);    
+               $gtmcode[] = $gtm;
+               Log::info($gtmcode);    
             }
             Log::info('URL = '. $singularUrl. ' status = '. $status);
         }

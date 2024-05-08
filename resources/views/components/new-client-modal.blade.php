@@ -28,8 +28,8 @@
                         <input type="email" class="form-control" id="email" name="email">
                     </div>
                     <div class="form-group">
-                        <label for="contact_number">Contact Number:</label>
-                        <input type="text" class="form-control" id="contact_number" name="contact_number">
+                        <label for="contact_number">Contact:</label>
+                        <input type="number" class="form-control" id="contact" name="contact">
                     </div>
                 </div>
                 </div>
@@ -39,12 +39,11 @@
                         <div class="card">
                             <div class="card-header">URL</div>
                             <div class="card-body">
-                                <div class="input-group">
-                                    <input type="text" name="" id="" class="form-control input-group" placeholder="Enter Url..">
+                                <div class="input-group input-group-url">
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button class="btn btn-primary btn-sm">Add Url <i class="fas fa-plus"></i></button>
+                                <button class="btn btn-primary btn-sm" id="add-url-button">Add Url <i class="fas fa-plus"></i></button>
                             </div>
                         </div>
                     </div>
@@ -52,11 +51,10 @@
                         <div class="card">
                             <div class="card-header">Email to notify</div>
                             <div class="card-body">
-                            <div class="input-group">
-                                    <input type="text" name="" id="" class="form-control input-group" placeholder="Enter Email..">
+                            <div class="input-group input-group-email">
                                 </div>
                             </div>
-                            <div class="card-footer"><button class="btn btn-primary btn-sm">Add Email <i class="fas fa-plus"></i></button></div>
+                            <div class="card-footer"><button class="btn btn-primary btn-sm" id="add-email-button">Add Email <i class="fas fa-plus"></i></button></div>
                         </div>
                     </div>
                 </div>

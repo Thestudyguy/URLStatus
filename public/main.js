@@ -118,7 +118,7 @@ $(document).ready(function () {
                 return $("#addEmailInput").removeAttr("disabled");
             }
         });
-    };
+    }
 
 });
 

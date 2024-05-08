@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NewClientController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\URLController;
 use Illuminate\Support\Facades\Route;
@@ -32,4 +33,6 @@ Route::post('register-user', [URLController::class, 'RegisterUser'])->name('regi
 Route::get('/pages/client', function () {
     return view('pages.client');
 })->name('clients');
-Route::get('/', [URLController::class, 'getURL']);
+Route::get('/', [URLController::class, 'GetClients']);
+Route::get('/clients', [URLController::class, 'GetClients']);
+Route::post('save-new', [NewClientController::class, 'SaveNewClient']);

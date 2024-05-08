@@ -180,8 +180,7 @@ class URLController extends Controller
     public function GetClients(){
         try {
             $clients = Clients::all();
-            return view('components.Card', compact('clients'));
-            dd($clients);
+            return view('index', compact('clients'));
         } catch (\Throwable $th) {
             throw $th;
         }

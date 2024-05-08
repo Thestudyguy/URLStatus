@@ -33,4 +33,3 @@ Route::get('/pages/client', function () {
     return view('pages.client');
 })->name('clients');
 Route::get('/', [URLController::class, 'getURL']);
-Route::get('/clients', [URLController::class, 'GetClients']);

@@ -32,7 +32,9 @@
                     <div class="card-title-primary">Clients</div>
                 </div>
                 <div class="card-body">
-                    @include('components.card')
+                    @section('card')
+                   @yield('card')
+                   @endsection
                 </div>
                 <div class="card-footer">
                     @include('components.new-client-modal')

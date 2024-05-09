@@ -13,6 +13,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div id="alert-error-container">
+            </div>
             <div class="modal-body">
                 <div class="card">
                     <div class="card-header">
@@ -36,7 +38,7 @@
                 <hr>
                 <div class="row">
                     <div class="col col-lg-6 col-md-6 col-6">
-                        <div class="card">
+                        <div class="card" id="card-url">
                             <div class="card-header">URL</div>
                             <div class="card-body">
                                 <div class="input-group input-group-url">
@@ -48,7 +50,7 @@
                         </div>
                     </div>
                     <div class="col col-lg-6 col-md-6 col-6">
-                        <div class="card">
+                        <div class="card border" id="card-email">
                             <div class="card-header">Email to notify</div>
                             <div class="card-body">
                             <div class="input-group input-group-email">
@@ -60,6 +62,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+            <button type="button" class="btn btn-success swalDefaultSuccess">
+                  Launch Success Toast
+                </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" id="saveBtn" class="btn btn-primary">Save</button>
             </div>

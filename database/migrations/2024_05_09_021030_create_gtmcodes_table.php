@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('urlcs', function (Blueprint $table){
-            $table->unsignedBigInteger('owner')->after('status');
-            $table->foreign('owner')->references('id')->on('clients')->onDelete('cascade');
+        Schema::create('gtmcodes', function (Blueprint $table) {
+            $table->id();
+            $table->string('gtm_codes');
+            $table->unsignedBigInteger('url');
+            $table->foreign('url')->references('id')->on('urlcs')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('urlcs', function(Blueprint $table){
-            $table->dropColumn('owner');
-        }); 
+        Schema::dropIfExists('gtmcodes');
     }
 };

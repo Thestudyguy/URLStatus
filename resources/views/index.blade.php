@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}/">
     <link rel="stylesheet" href="{{asset('style.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
     <title>URL Status Checker</title>
 </head>
 
@@ -67,6 +69,8 @@
     <script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
     <script src="{{asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
     <script src="{{asset('dist/js/pages/dashboard.js')}}"></script>
+    <script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+    <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
 </body>
 
 </html>

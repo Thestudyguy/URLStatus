@@ -1,15 +1,18 @@
 let emailInputCounter = 1;
 let UrlInputCounter = 1;
-$(document).ready(function(){
-    $("#overlay").hide();
-});
-
-$(document).ready(function () {
-    $('#new-client').on('hidden.bs.modal', function () {
-        console.log('oten bisong hahaha');
-        //clear form if modal is not visible
+var Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 5000,
+  });
+  
+    $(document).ready(function(){
+        $("#overlay").hide();
+        $('#new-client').on('hidden.bs.modal', function () {
+            console.log('oten bisong hahaha');
+        });
     });
-});
 //email
 $("#add-email-button").click(
     function() {
@@ -60,7 +63,7 @@ $("#saveBtn").click(
         var client_contact = $("#contact").val();
         var email = [];
         var url = [];
-        var gtm_codes_regex = /GTM-([^"\'>]+)(?!\\)[^'"\/>]/gi;
+        //var gtm_codes_regex = /GTM-([^"\'>]+)(?!\\)[^'"\/>]/gi;
         $("input[name='email[]'], input[name='url[]']").each(function() {
             var value = $(this).val().trim();
             if (value !== '') {
@@ -87,11 +90,48 @@ $("#saveBtn").click(
             success: function(response){
                 console.log(response);
                 $("#overlay").hide();
+                $("#new-client button[data-dismiss='modal']").click();
+                //swalAlert('success');
+                $(".swalDefaultSuccess").click();
+                  console.log('success');
+                  console.log(response.id);
+                  getClients();
             },
             error: function(xhr, status, error){
+                $("#overlay").hide();
                 console.log(xhr);
+                console.log('error');
+                $("#alert-error-container").html(`
+                <div class='p-3'>
+                <div class="alert alert-danger">
+                <strong class="text-light">Oops!</strong>
+                <p class="text-sm" id="error-container">Something went wrong!</p>
+                </div>
+                </div>
+                `);
+                setTimeout(() => {
+                    $("#alert-error-container").empty()
+                }, 3500);
             }
 
         })
         }
 );
+function getClients(){
+    $.ajax({
+        url: "/clients",
+        method: 'GET',
+        success: function (response) {
+            console.log(response);
+            $("#client-card").html(response);
+        },
+        error: function (xhr, status, error) {
+        },
+    });
+}
+$('.swalDefaultSuccess').click(function() {
+    Toast.fire({
+      icon: 'success',
+      title: 'New Client Added'
+    })
+  });

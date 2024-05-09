@@ -19,8 +19,11 @@ return new class extends Migration
             $table->string('url');
             $table->string('status');
             $table->boolean('IsVisible')->default(true);
+            $table->unsignedBigInteger('owner');
+            $table->foreign('owner')->references('id')->on('clients')->onDelete('cascade');
             $table->timestamps();
         });
+        
     }
 
     /**

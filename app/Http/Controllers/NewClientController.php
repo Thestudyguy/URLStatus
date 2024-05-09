@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Clients;
 use App\Models\Emails;
+use App\Models\gtmcodes;
 use App\Models\Urlcs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,41 +13,95 @@ use Illuminate\Support\Facades\Http;
 class NewClientController extends Controller
 {
     public function SaveNewClient(Request $request){
-
+        try {
         $client = $request->client;
         $client_email = $request->client_email;
         $client_contact = $request->client_contact;
-        $email_array = $request->email;
-        $url_array = $request->url;
-        
-        $url = [];
-        $email = [];
-        $gtm_codes = [];
-        $status = '';
-        Log::info($client);
-        Log::info($client_email);
-        Log::info($client_contact);
-        foreach ($email_array as $emails) {
-            //Log::info($emails);
-            $notify_email = $email[] = $emails;
-            Log::info($notify_email);
+        $urls = $request->url;
+        $email = $request->email;
+        $client_saved = Clients::create([
+            'client' => $client,
+            'email' => $client_email,
+            'contact_number' => $client_contact,
+        ]);
+        $client_id = $client_saved->id;
+        $this->saveUrl($client_id, $urls, $email);
+        return response()->json(['success' => 'Client added successfuly', 'id' => $client_id]);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th]);
         }
-        foreach ($url_array as $urls) {
-            $pattern = '/googletagmanager\.com\/gtm\.js\?id=([^\s"\'<]+)/i';
-            $patternGTM = '/GTM-([a-zA-Z0-9]+)/i';
-            $singularUrl = $url[] = $urls;
-            $response = Http::get($singularUrl);
-            $status = $response->status();
-            $body = $response->body();
-            $gtmcode = [];
-            preg_match_all($patternGTM, $body, $matches);
-            foreach ($matches as $gtm) {
-               $gtmcode[] = $gtm;
-               Log::info($gtmcode);    
+    }
+    private function saveUrl($clientID, $urls, $emails){
+        try {
+            $client_id = $clientID;
+            $gtm_codes = [];
+            $gtm_serial_number_pattern = '/GTM-([a-zA-Z0-9]+)/i';
+            foreach ($urls as $url) {
+                if(!empty($url)){
+                    $singularUrl = $url;
+                    $response = Http::get($singularUrl);
+                    $status = $response->status();
+                    $body = $response->body();
+                    preg_match_all($gtm_serial_number_pattern, $body, $matches);
+                    $url_id = Urlcs::create([
+                        'url' => $singularUrl,
+                        'status' => $status,
+                        'owner' => $clientID,
+                    ]);
+                    $url_foreign_id = $url_id->id;
+                    if (!empty($matches[1])) {
+                        $unique_gtm = $gtm_codes[] = $matches[1];
+                        $gtm = array_unique($unique_gtm);
+                        $this->saveGtmCodes($url_foreign_id, $gtm);
+                    }
+                }
+                $this->saveClientEmails($clientID, $url_foreign_id, $emails);
             }
-            Log::info('URL = '. $singularUrl. ' status = '. $status);
+            return response()->json(['success' => 'URLs added successfully']);
+        } catch (\Throwable $th) {
+            throw $th;
+            return response()->json(['error' => 'Failed to add URLs'], 500);
+        }
+    }
+    private function saveGtmCodes($UrlID, $gtm_codes){
+        try {
+            foreach ($gtm_codes as $gtm) {
+                $gtmcodes = $gtm;
+                gtmcodes::create([
+                    'gtm_codes' => $gtmcodes,
+                    'url' => $UrlID
+                ]);
+            }
+            return response()->json(['success' => 'GTM Codes added successfully']);
+        } catch (\Throwable $th) {
+            throw $th;
+            return response()->json(['error' => 'Failed to add GTM Codes'], 500);
+        }
+    }
+    private function saveClientEmails($clientID, $UrlID, $emails){
+        try {
+            Log::info('Client = '.$clientID. ' URL = '. $UrlID. 'Email = '. $emails);
+            foreach ($emails as $email) {
+                Emails::create([
+                    'email' => $email,
+                    'url' => $UrlID,
+                    'client' => $clientID 
+                ]);
+                return response()->json(['success' => 'Failed to add Emails']);
+        }
+        } catch (\Throwable $th) {
+            throw $th;
+            return response()->json(['error' => 'Failed to add Emails'], 500);
         }
 
+    }
+    public function getClients(){
+        try {
+            $clients = Clients::all();
+            return view('components.Card', compact('clients'));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
 /**

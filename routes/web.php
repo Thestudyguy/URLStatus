@@ -35,4 +35,5 @@ Route::get('/pages/client', function () {
 })->name('clients');
 Route::get('/', [URLController::class, 'GetClients']);
 Route::get('/clients', [URLController::class, 'GetClients']);
+Route::get('/clients', [NewClientController::class, 'GetClients']);
 Route::post('save-new', [NewClientController::class, 'SaveNewClient']);

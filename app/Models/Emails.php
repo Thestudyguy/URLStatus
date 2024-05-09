@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\URL;
 class Emails extends Model
 {
     use HasFactory;
-    protected $fillable = ['email', 'url'];
+    protected $fillable = ['email', 'url', 'owner'];
     public function Email() : BelongsTo{
         return $this->belongsTo(URL::class, 'url');
     }

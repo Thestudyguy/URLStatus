@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('urlhistories', function (Blueprint $table) {
             $table->id();
-            $table->string('client');
-            $table->string('email');
-            $table->string('contact_number');
+            $table->string('url');
+            $table->string('status');
+            $table->string('old_status');
+            $table->string('new_status');
+            $table->unsignedBigInteger('url_id');
+            $table->foreign('url_id')->references('id')->on('urls')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('urlhistories');
     }
 };

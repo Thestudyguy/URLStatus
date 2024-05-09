@@ -6,7 +6,7 @@
                             <div class="text-lg text-light">MediaOne PH</div>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('clients') }}" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>
                                     Clients

@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('emails', function (Blueprint $table){
-            $table->unsignedBigInteger('client')->after('url');
-            $table->foreign('client')->references('id')->on('clients')->onDelete('cascade');
+        Schema::create('gtmcodes', function (Blueprint $table) {
+            $table->id();
+            $table->string('gtm_codes');
+            $table->unsignedBigInteger('url');
+            $table->foreign('url')->references('id')->on('urls')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('emails', function(Blueprint $table){
-            $table->dropColumn('client');
-        }); 
+        Schema::dropIfExists('gtmcodes');
     }
 };

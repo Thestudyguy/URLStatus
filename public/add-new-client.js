@@ -74,6 +74,7 @@ $("#saveBtn").click(
                 }
             }
         });
+        console.log(email);
         console.log(url);
         $.ajax({
             type: 'POST',

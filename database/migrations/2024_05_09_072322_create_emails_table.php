@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('urlhistories', function (Blueprint $table) {
+        Schema::create('emails', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
-            $table->string('old_status');
-            $table->string('new_status');
-            $table->unsignedBigInteger('url_ref');
-            $table->foreign('url_ref')->references('id')->on('urlcs')->onDelete('cascade');
+            $table->string('email');
+            $table->unsignedBigInteger('client');
+            $table->foreign('client')->references('id')->on('clients')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('urlhistories');
+        Schema::dropIfExists('emails');
     }
 };

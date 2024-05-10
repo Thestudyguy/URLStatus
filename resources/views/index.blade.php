@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- <script src="{{ asset('main.js') }}" defer></script> -->
+    <script src="{{ asset('main.js') }}" defer></script>
     <script src="{{ asset('add-new-client.js') }}" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{{asset('style.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
+    <link rel="stylesheet" href="{{asset('treeData.min.css')}}" />
     <title>URL Status Checker</title>
 </head>
 
@@ -28,13 +29,14 @@
         @include('components.sidebar')
         <div class="content-wrapper p-5">
             @include('components.data')
-            @include('components.http_codes')
+            {{-- @include('components.http_codes') --}}
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-primary">Clients</div>
                 </div>
                 <div class="card-body">
                     @include('components.Card')
+                    <div class="" id="element"></div>
                 </div>
                 <div class="card-footer">
                     @include('components.new-client-modal')

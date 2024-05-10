@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\NewClientController;
+use App\Http\Controllers\ProxyController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\URLController;
 use Illuminate\Support\Facades\Route;
@@ -19,3 +20,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [NewClientController::class, 'default']);
 Route::get('/clients', [NewClientController::class, 'GetClients']);
 Route::post('save-new', [NewClientController::class, 'SaveNewClient']);
+Route::post('client-details/{id}', [ProxyController::class, 'getClientDataTree']);

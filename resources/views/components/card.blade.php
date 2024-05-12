@@ -1,4 +1,4 @@
-<div class="card-container " id="client-card">
+<div class="card-container" id="client-card">
     @foreach($clients as $client)
         <div class="card" style="cursor: pointer;" id="{{$client->id}}" onclick="clientDetails('{{$client->id}}','{{$client->client}}')" data-target="#client-details" data-toggle="modal"> 
             <div class="card-body">{{$client->client}}</div>
@@ -10,3 +10,6 @@
         @include('components.client-details')
     @endforeach
 </div>
+{{-- $emails = Email::select('emails.email')
+    ->join('urls', 'emails.client', '=', 'urls.owner')
+    ->get(); --}}

@@ -5,17 +5,17 @@ var Toast = Swal.mixin({
     position: 'top-end',
     showConfirmButton: false,
     timer: 5000,
-  });
-  
-    $(document).ready(function(){
-        $("#overlay").hide();
-        $('#new-client').on('hidden.bs.modal', function () {
-            console.log('oten bisong hahaha');
-        });
+});
+
+$(document).ready(function () {
+    $("#overlay").hide();
+    $('#new-client').on('hidden.bs.modal', function () {
+        console.log('oten bisong hahaha');
     });
+});
 //email
 $("#add-email-button").click(
-    function() {
+    function () {
         emailInputCounter++;
         var emailInputHtml =
             '<div class="input-group mt-2 emailInputWrapper" id="emailInputGroup_' +
@@ -36,14 +36,14 @@ window.removeEmailInput = function (inputId) {
 
 //url
 $("#add-url-button").click(
-    function(){
+    function () {
         UrlInputCounter++;
-        var UrlInputHtml =  '<div class="input-group mt-2 urlInputWrapper" id="urlInputGroup_' +
-        UrlInputCounter + '">' +
-        '<input type="text" class="form-control urlInput" placeholder="Enter Url" name="url[]" required>' +
-        '<button class="btn btn-outline-danger px-3" type="button" onclick="removeUrlInput(' +
-        UrlInputCounter + ')">Remove</button>' +
-        '</div>';
+        var UrlInputHtml = '<div class="input-group mt-2 urlInputWrapper" id="urlInputGroup_' +
+            UrlInputCounter + '">' +
+            '<input type="text" class="form-control urlInput" placeholder="Enter Url" name="url[]" required>' +
+            '<button class="btn btn-outline-danger px-3" type="button" onclick="removeUrlInput(' +
+            UrlInputCounter + ')">Remove</button>' +
+            '</div>';
         $(".input-group-url").append(UrlInputHtml);
     }
 )
@@ -55,7 +55,7 @@ window.removeUrlInput = function (inputId) {
 }
 
 $("#saveBtn").click(
-    function() {
+    function () {
         $("#overlay").show();
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
         var client = $("#client").val();
@@ -64,7 +64,7 @@ $("#saveBtn").click(
         var email = [];
         var url = [];
         //var gtm_codes_regex = /GTM-([^"\'>]+)(?!\\)[^'"\/>]/gi;
-        $("input[name='email[]'], input[name='url[]']").each(function() {
+        $("input[name='email[]'], input[name='url[]']").each(function () {
             var value = $(this).val().trim();
             if (value !== '') {
                 if ($(this).attr('name') === 'email[]') {
@@ -88,17 +88,17 @@ $("#saveBtn").click(
                 url: url,
                 _token: csrfToken,
             },
-            success: function(response){
+            success: function (response) {
                 console.log(response);
                 $("#overlay").hide();
                 $("#new-client button[data-dismiss='modal']").click();
                 //swalAlert('success');
                 $(".swalDefaultSuccess").click();
-                  console.log('success');
-                  console.log(response.id);
-                  getClients();
+                console.log('success');
+                console.log(response.id);
+                getClients();
             },
-            error: function(xhr, status, error){
+            error: function (xhr, status, error) {
                 $("#overlay").hide();
                 console.log(xhr);
                 console.log('error');
@@ -116,23 +116,31 @@ $("#saveBtn").click(
             }
 
         })
-        }
+    }
 );
-function getClients(){
+function getClients() {
     $.ajax({
         url: "/clients",
         method: 'GET',
         success: function (response) {
             console.log(response);
-            $("#client-card").html(response);
+            $("#client-card").append(`
+            <div class="card" style="cursor: pointer;" id="${response.id}" onclick="clientDetails('{{$client->id}}','{{$client->client}}')" data-target="#client-details" data-toggle="modal"> 
+            <div class="card-body">${response.client}</div>
+            <div class="card-footer">
+            
+            </div>
+        </div>
+            `);
+            console.log(response);
         },
         error: function (xhr, status, error) {
         },
     });
 }
-$('.swalDefaultSuccess').click(function() {
+$('.swalDefaultSuccess').click(function () {
     Toast.fire({
-      icon: 'success',
-      title: 'New Client Added'
+        icon: 'success',
+        title: 'New Client Added'
     })
-  });
+});

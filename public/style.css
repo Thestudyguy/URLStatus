@@ -71,10 +71,6 @@ input[type="number"] {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     gap: 15px;
-}
-.append-res .card #client-url{
-    width: calc(25% - 5px);
-    overflow: hidden;
 }

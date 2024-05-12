@@ -20,85 +20,61 @@ class NewClientController extends Controller
         $client_email = $request->client_email;
         $client_contact = $request->client_contact;
         $urls = $request->url;
-        $email = $request->email;
+        $emails = $request->email;
         $client_saved = Clients::create([
             'client' => $client,
             'email' => $client_email,
             'contact' => $client_contact,
         ]);
         $client_id = $client_saved->id;
-        $this->saveUrl($client_id, $urls, $email);
-        $this->saveClientEmails($client_id, $email);
-        //Log::info($client_id);
-        //Log::info($urls);
-        //Log::info($email);
+        $this->saveGTMandURL($urls, $client_id);
+        //saving email
+        foreach ($emails as $email) {
+            email::create([
+                'email' => $email,
+                'client' => $client_id
+            ]);
+        }
         return response()->json(['success' => 'Client added successfuly', 'id' => $client_id]);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th]);
         }
     }
-    private function saveUrl($clientID, $urls, $emails){
+    
+    private function saveGTMandURL($urls, $owner){
         try {
-            $gtm_codes = [];
-            $gtm_serial_number_pattern = '/GTM-([a-zA-Z0-9]+)/i';
             foreach ($urls as $url) {
                 $response = Http::get($url);
                 $status = $response->status();
                 $body = $response->body();
-                preg_match_all($gtm_serial_number_pattern, $body, $matches);
-                $saved_url = url::create([
+                preg_match_all('/GTM-([a-zA-Z0-9]+)/i', $body, $matches);
+    
+                $urlObject = Url::create([
                     'url' => $url,
                     'status' => $status,
-                    'owner' => $clientID
+                    'owner' => $owner
                 ]);
+    
+                $urlId = $urlObject->id;
+                $uniqueGTM = array_unique($matches[0]);
+                foreach ($uniqueGTM  as $gtmCode) {
+                    Gtmcodes::create([
+                        'gtm_codes' => $gtmCode,
+                        'url' => $urlId
+                    ]);
+                }
             }
-            $url_id = $saved_url->id;
-            if (!empty($matches[1])) {
-                $unique_gtm = $gtm_codes[] = $matches[1];
-                $gtm = array_unique($unique_gtm);
-                $this->saveGtmCodes($url_id, $gtm);
-            }
-            Log::info($saved_url);
-            return response()->json(['success' => 'URLs added successfully']);
+            return true;
         } catch (\Throwable $th) {
-            throw $th;
-            return response()->json(['error' => 'Failed to add URLs'], 500);
+            Log::error($th->getMessage());
+            return false;
         }
     }
-    private function saveGtmCodes($UrlID, $gtm_codes){
-        try {
-            foreach ($gtm_codes as $gtm) {
-                $gtmcodes = $gtm;
-                gtmcodes::create([
-                    'gtm_codes' => $gtmcodes,
-                    'url' => $UrlID
-                ]);
-            }
-            return response()->json(['success' => 'GTM Codes added successfully']);
-        } catch (\Throwable $th) {
-            throw $th;
-            return response()->json(['error' => 'Failed to add GTM Codes'], 500);
-        }
-    }
-    private function saveClientEmails($clientID, $emails){
-        try {
-            foreach ($emails as $email) {
-                email::create([
-                    'email' => $email,
-                    'client' => $clientID 
-                ]);
-            }
-            return response()->json(['success' => 'Failed to add Emails']);
-        } catch (\Throwable $th) {
-            throw $th;
-            return response()->json(['error' => 'Failed to add Emails'], 500);
-        }
-
-    }
+    //okay na diri from saveGTMadnURL to saveNewClient
     public function getClients(){
         try {
-            $clients = Clients::all();
-            return view('components.Card', compact('clients'));
+            $clients = Clients::latest()->first();
+            return $clients;
         } catch (\Throwable $th) {
             throw $th;
         }

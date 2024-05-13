@@ -1,5 +1,5 @@
 <div class="modal fade" id="client-details">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
         {{-- <div class="overlay" id="overlay">
         <i class="loader"></i>

@@ -125,10 +125,9 @@ function getClients() {
         success: function (response) {
             console.log(response);
             $("#client-card").append(`
-            <div class="card" style="cursor: pointer;" id="${response.id}" onclick="clientDetails('{{$client->id}}','{{$client->client}}')" data-target="#client-details" data-toggle="modal"> 
+            <div class="card" style="cursor: pointer;" id="${response.id}" onclick="clientDetails('${response.id}','${response.client}')" data-target="#client-details" data-toggle="modal"> 
             <div class="card-body">${response.client}</div>
             <div class="card-footer">
-            
             </div>
         </div>
             `);

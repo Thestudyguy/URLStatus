@@ -14,17 +14,17 @@ class ProxyController extends Controller
 {
     public function getClientDataTree($id) {
         try {
-            $clientData = clients::select('clients.client', 'urls.url', 'gtmcodes.gtm_codes')
+            $clientData = clients::select('clients.client', 'urls.url', 'urls.status', 'gtmcodes.gtm_codes')
             ->join('urls', 'clients.id', '=', 'urls.owner')
             ->join('gtmcodes', 'urls.id', '=', 'gtmcodes.url')
             ->where('clients.id', $id)
             ->distinct()
             ->get();
-            $arrayToStoreLoopedClientsDataBecauseLaravelIsANaggingBitch = [];
-            foreach ($clientData as $uniqueData) {
-               $arrayToStoreLoopedClientsDataBecauseLaravelIsANaggingBitch[] = $uniqueData;
-            }
-            return response()->json(['data'=> $arrayToStoreLoopedClientsDataBecauseLaravelIsANaggingBitch]);
+            //$arrayToStoreLoopedClientsDataBecauseLaravelIsANaggingBitch = [];
+            //foreach ($clientData as $uniqueData) {
+            //   $arrayToStoreLoopedClientsDataBecauseLaravelIsANaggingBitch[] = $uniqueData;
+            //}
+            return response()->json(['data'=>$clientData]);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }

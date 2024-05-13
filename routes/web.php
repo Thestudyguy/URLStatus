@@ -21,3 +21,6 @@ Route::get('/', [NewClientController::class, 'default']);
 Route::get('/clients', [NewClientController::class, 'GetClients']);
 Route::post('save-new', [NewClientController::class, 'SaveNewClient']);
 Route::post('client-details/{id}', [ProxyController::class, 'getClientDataTree']);
+Route::get('/url', function () {
+    return view('pages.url');
+});

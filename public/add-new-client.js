@@ -57,6 +57,8 @@ window.removeUrlInput = function (inputId) {
 $("#saveBtn").click(
     function () {
         $("#overlay").show();
+        var urlRegex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
+
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
         var client = $("#client").val();
         var client_email = $("#email").val();
@@ -92,7 +94,6 @@ $("#saveBtn").click(
                 console.log(response);
                 $("#overlay").hide();
                 $("#new-client button[data-dismiss='modal']").click();
-                //swalAlert('success');
                 $(".swalDefaultSuccess").click();
                 console.log('success');
                 console.log(response.id);
@@ -123,6 +124,7 @@ function getClients() {
         url: "/clients",
         method: 'GET',
         success: function (response) {
+            $("#client-card")
             console.log(response);
             $("#client-card").append(`
             <div class="card" style="cursor: pointer;" id="${response.id}" onclick="clientDetails('${response.id}','${response.client}')" data-target="#client-details" data-toggle="modal"> 

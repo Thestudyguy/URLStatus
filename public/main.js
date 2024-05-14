@@ -18,8 +18,6 @@ function clientDetails(id, client) {
         method: 'POST',
         success: function (response) {
             let uniqueUrls = [...new Set(response.data.map(entry => entry.url))];
-            
-            // Create a map to store unique GTM codes and status for each URL
             let uniqueDataMap = new Map();
             response.data.forEach(entry => {
                 if (!uniqueDataMap.has(entry.url)) {
@@ -27,37 +25,67 @@ function clientDetails(id, client) {
                 }
                 uniqueDataMap.get(entry.url).gtmCodes.add(entry.gtm_codes);
             });
-            
-            // Convert the map to an array of objects containing URL, GTM codes, and status
             let uniqueData = Array.from(uniqueDataMap, ([url, data]) => ({ url, gtmCodes: [...data.gtmCodes], status: data.status }));
-        
+            console.log(response);
             uniqueUrls.forEach(url => {
                 console.log(url);
                 let dataForUrl = uniqueData.find(entry => entry.url === url);
                 let associatedGtmCodes = dataForUrl.gtmCodes;
                 let status = dataForUrl.status;
-        
-                let gtmCodesHtml = associatedGtmCodes.map(gtmCode => `<tr><td>${gtmCode}</td></tr>`).join('');
-                
+                let gtmCodesHtml = associatedGtmCodes.length >= 0 ? associatedGtmCodes.map(gtmCode => `<tr><td>${gtmCode}</td></tr>`).join('') : '<tr><td>GTM Not Installed</td></tr>';
+                let isGtmEmpty = '';
+                console.log(gtmCodesHtml);
+                let strappedUrl = url.substring(0, 31);
+                let statusFirstWordOfTheStatusToDetermineTheBackgroundColorOfTheFooterToReturnComporehensiveDataReportNiggerLOL = status.substring(0, 1);
+                let footerBG = '';
+                console.log(statusFirstWordOfTheStatusToDetermineTheBackgroundColorOfTheFooterToReturnComporehensiveDataReportNiggerLOL);
+                if (statusFirstWordOfTheStatusToDetermineTheBackgroundColorOfTheFooterToReturnComporehensiveDataReportNiggerLOL == 1) {
+                    footerBG = 'bg-info';
+                }
+                if (statusFirstWordOfTheStatusToDetermineTheBackgroundColorOfTheFooterToReturnComporehensiveDataReportNiggerLOL == 2) {
+                    footerBG = 'bg-success';
+                }
+                if (statusFirstWordOfTheStatusToDetermineTheBackgroundColorOfTheFooterToReturnComporehensiveDataReportNiggerLOL == 3) {
+                    footerBG = 'bg-secondary';
+                }
+                if (statusFirstWordOfTheStatusToDetermineTheBackgroundColorOfTheFooterToReturnComporehensiveDataReportNiggerLOL == 4) {
+                    footerBG = 'bg-warning';
+                }
+                if (statusFirstWordOfTheStatusToDetermineTheBackgroundColorOfTheFooterToReturnComporehensiveDataReportNiggerLOL == 5) {
+                    footerBG = 'bg-danger';
+                }
+                console.log(footerBG);
                 $("#client-details div[class='append-res']").append(`
-                    <div class="card col-5">
-                        <table class="table table-striped">
+                        <div class="card direct-chat direct-chat-primary col-5">
+                        <div class="card-header" title='${url}'>
+                        ${strappedUrl}
+                          <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                              <i class="fas fa-minus"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="card-body">
+                        <table class="table table-stripped">
                             <thead>
-                                <tr>
-                                    <th>${url}</th>
-                                </tr>
+                                <th>GTM Codes</th>
                             </thead>
                             <tbody>
-                                ${gtmCodesHtml}
-                                <tr><td>Status: ${status}</td></tr>
+                                <tr>
+                                    <td>
+                                    ${gtmCodesHtml ? gtmCodesHtml : 'Oten haha'}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
-                    </div>
+                        </div>
+                        <div class="card-footer ${footerBG} m-3">
+                         <div class='text-sm text-secodnary'>URL Status ${status}</div>
+                        </div>
+                      </div>
                 `);
             });
         },
-        
-        
         
         error: function (error, xhr, status) {
             console.log(xhr);

@@ -1,5 +1,6 @@
 <div class="modal fade" id="client-details">
     <div class="modal-dialog modal-xl">
+        
         <div class="modal-content">
         {{-- <div class="overlay" id="overlay">
         <i class="loader"></i>
@@ -12,7 +13,7 @@
             </div>
             <div class="modal-body">
                 <div class="append-res">
-                    
+               
                 </div>
             </div>
             <div class="modal-footer">

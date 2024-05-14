@@ -1,6 +1,8 @@
 $(document).ready(function () {
     $('#client-details').on('hidden.bs.modal', function () {
         $('.append-res').empty();
+        $('.append-res button[data-card-widget="collapse"]').click();
+        
     });
 });
 
@@ -26,18 +28,27 @@ function clientDetails(id, client) {
                 uniqueDataMap.get(entry.url).gtmCodes.add(entry.gtm_codes);
             });
             let uniqueData = Array.from(uniqueDataMap, ([url, data]) => ({ url, gtmCodes: [...data.gtmCodes], status: data.status }));
-            console.log(response);
             uniqueUrls.forEach(url => {
-                console.log(url);
                 let dataForUrl = uniqueData.find(entry => entry.url === url);
                 let associatedGtmCodes = dataForUrl.gtmCodes;
                 let status = dataForUrl.status;
-                let gtmCodesHtml = associatedGtmCodes.length >= 0 ? associatedGtmCodes.map(gtmCode => `<tr><td>${gtmCode}</td></tr>`).join('') : '<tr><td>GTM Not Installed</td></tr>';
-                let isGtmEmpty = '';
-                console.log(gtmCodesHtml);
+                let gtmCodesHtml = associatedGtmCodes.map(gtmCode => `<tr><td>${gtmCode}</td></tr>`).join('');
                 let strappedUrl = url.substring(0, 31);
                 let statusFirstWordOfTheStatusToDetermineTheBackgroundColorOfTheFooterToReturnComporehensiveDataReportNiggerLOL = status.substring(0, 1);
                 let footerBG = '';
+                let isGtmPresent;
+
+                if (associatedGtmCodes.length > 0) {
+                    isGtmPresent = associatedGtmCodes.map(gtmCode => {
+                        if (gtmCode !== null) {
+                            return `<tr><td>${gtmCode}</td></tr>`;
+                        } else {
+                            return `<tr><td>GTM Not Installed</td></tr>`;
+                        }
+                    }).join('');
+                } else {
+                    isGtmPresent = '<tr><td>GTM Not Installed</td></tr>';
+                }
                 console.log(statusFirstWordOfTheStatusToDetermineTheBackgroundColorOfTheFooterToReturnComporehensiveDataReportNiggerLOL);
                 if (statusFirstWordOfTheStatusToDetermineTheBackgroundColorOfTheFooterToReturnComporehensiveDataReportNiggerLOL == 1) {
                     footerBG = 'bg-info';
@@ -56,8 +67,8 @@ function clientDetails(id, client) {
                 }
                 console.log(footerBG);
                 $("#client-details div[class='append-res']").append(`
-                        <div class="card direct-chat direct-chat-primary col-5">
-                        <div class="card-header" title='${url}'>
+                        <div class="card direct-chat direct-chat-primary col-xl-5 col-lg-5 col-sm-12">
+                        <div class="card-header" title='${url} view details'>
                         ${strappedUrl}
                           <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -66,14 +77,14 @@ function clientDetails(id, client) {
                           </div>
                         </div>
                         <div class="card-body">
-                        <table class="table table-stripped">
+                        <table class="table table-stripped" style='height: 100px'>
                             <thead>
                                 <th>GTM Codes</th>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
-                                    ${gtmCodesHtml ? gtmCodesHtml : 'Oten haha'}
+                                    ${isGtmPresent}
                                     </td>
                                 </tr>
                             </tbody>
@@ -86,7 +97,7 @@ function clientDetails(id, client) {
                 `);
             });
         },
-        
+        // style='min-height: 10px; overflow: auto;'
         error: function (error, xhr, status) {
             console.log(xhr);
         }

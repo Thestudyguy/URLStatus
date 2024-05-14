@@ -1,4 +1,4 @@
-<div class="card-container" id="client-card">
+<div class="card-container" id="client-card" style='max-height: 350px; overflow:auto;'>
 
     @foreach($clients as $client)
         <div class="card" style="cursor: pointer;" id="{{$client->id}}" onclick="clientDetails('{{$client->id}}','{{$client->client}}')" data-target="#client-details" data-toggle="modal"> 
@@ -14,3 +14,4 @@
 {{-- $emails = Email::select('emails.email')
     ->join('urls', 'emails.client', '=', 'urls.owner')
     ->get(); --}}
+    

@@ -27,8 +27,7 @@
     <div class="wrapper">
         @include('components.sidebar')
         <div class="content-wrapper p-5">
-            @include('components.data')
-            {{-- @include('components.http_codes') --}}
+            @include('components.http_codes')
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-primary">Clients</div>

@@ -6,7 +6,7 @@
                             <div class="text-lg text-light">MediaOne PH</div>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="/" class="nav-link">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>
                                     Clients
@@ -17,7 +17,7 @@
                             <a href="url" class="nav-link">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
-                                    URL
+                                    URL History
                                 </p>
                             </a>
                             <!-- <ul class="nav nav-treeview">
@@ -28,14 +28,14 @@
                                 </li>
                             </ul> -->
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-link"></i>
                                 <p>
                                     URL History
                                 </p>
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
                 </nav>
             </div>

@@ -1,5 +1,4 @@
-<div class="card-container" id="client-card" style='max-height: 350px; overflow:auto;'>
-
+<div class="card-container" id="client-card" style='max-height: 350px; overflow:auto;' disabled>
     @foreach($clients as $client)
         <div class="card" style="cursor: pointer;" id="{{$client->id}}" onclick="clientDetails('{{$client->id}}','{{$client->client}}')" data-target="#client-details" data-toggle="modal"> 
             <div class="card-body">{{$client->client}}</div>

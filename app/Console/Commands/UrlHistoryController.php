@@ -7,7 +7,11 @@ use App\Models\url;
 use App\Models\urlhistory;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-
+use App\Models\clients;
+use App\Console\Commands\SendEmail;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendTableAsMail;
+use App\Models\email;
 class UrlHistoryController extends Command
 {
     /**
@@ -29,33 +33,23 @@ class UrlHistoryController extends Command
      */
     public function handle()
     {
-        $urls = url::all();
+        $urls = Url::all();
+    
         foreach ($urls as $url) {
-                //$this->info($url->status);
-                $response = Http::get($url->url);
-                $status = $response->status();
-                $body = $response->body();
-                $gtmcodes = [];
-                preg_match_all('/GTM-([a-zA-Z0-9]+)/i', $body, $matches);
-                foreach ($matches[0] as $gtm) {
-                    $gtmcodes[] = $gtm;
-                }
-                $uniqueArray = array_unique($gtmcodes);
-                if($status != $url->status){
-                    $this->info($status. ' = '. $url->url. ' notify authorities now! ~nya oni-chan');
-                    
-                }else{
-                    $this->info('were fine. We are okay!');
-                }
-                //$this->getGTM($uniqueArray);
-                //$this->info('start here...');                
-                //$this->info($url);
-                //$this->info($status);
-                //$this->info(implode(', ', $uniqueArray));
-                //$this->info('end here...');                
+            $urlId = $url->id;
+            $status = $url->status;
+            $emails = email::where('client', $url->owner)->pluck('email');
+            Mail::to($emails)->send(new SendTableAsMail($status, $urlId));
+            if ($emails->isNotEmpty()) {
+                $this->info("Emails associated with URL (ID: $urlId): " . implode(', ', $emails->toArray()));
+            } else {
+                $this->info("No emails found for URL (ID: $urlId)");
+            }
         }
-        $this->info('finish');
+    
+        $this->info('Finish');
     }
+    
 
     public function getGTM($gtmcodes){
 

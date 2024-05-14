@@ -16,7 +16,7 @@ class ProxyController extends Controller
         try {
             $clientData = clients::select('clients.client', 'urls.url', 'urls.status', 'gtmcodes.gtm_codes')
             ->join('urls', 'clients.id', '=', 'urls.owner')
-            ->Leftjoin('gtmcodes', 'urls.id', '=', 'gtmcodes.url')//->join('gtmcodes', 'urls.id', '=', 'gtmcodes.url') sa diay ko na dale kay di man diay mo return ning amaw 
+            ->Leftjoin('gtmcodes', 'urls.id', '=', 'gtmcodes.url')//->join('gtmcodes', 'urls.id', '=', 'gtmcodes.url') sa join diay ko na dale kay di man diay mo return ning amaw 
                                                                   //ug url ug walay associated data sa gi join na table 
                                                                   //if i want it otherwise i would have to use left join 
                                                                   //to include the urls without gtmcodes in the gtmcodes table

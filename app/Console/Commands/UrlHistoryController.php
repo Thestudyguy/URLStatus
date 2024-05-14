@@ -43,13 +43,7 @@ class UrlHistoryController extends Command
                 $uniqueArray = array_unique($gtmcodes);
                 if($status != $url->status){
                     $this->info($status. ' = '. $url->url. ' notify authorities now! ~nya oni-chan');
-                    urlhistory::create([
-                        'url' => $url->url,
-                        'status' => $status,
-                        'old_status' => $url->id,
-                        'new_status' => $url->id,
-                        'url_id' => $url->id,
-                    ]);
+                    
                 }else{
                     $this->info('were fine. We are okay!');
                 }

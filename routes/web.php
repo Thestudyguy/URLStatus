@@ -24,4 +24,3 @@ Route::post('client-details/{id}', [ProxyController::class, 'getClientDataTree']
 Route::get('/url', function () {
     return view('pages.url');
 });
-

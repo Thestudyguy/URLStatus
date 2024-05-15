@@ -28,6 +28,19 @@ class ProxyController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
-    
+    public function getAll(){
+        try {
+            $clientData = clients::select('clients.client', 'urls.url', 'urls.status', 'gtmcodes.gtm_codes')
+            ->join('urls', 'clients.id', '=', 'urls.owner')
+            ->leftJoin('gtmcodes', 'urls.id', '=', 'gtmcodes.url')
+            ->distinct()
+            ->get();
+            return response()->json([
+                'data' => $clientData
+            ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
     
 }

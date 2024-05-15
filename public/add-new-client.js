@@ -146,8 +146,3 @@ $('.swalDefaultSuccess').click(function () {
         title: 'New Client Added'
     })
 });
-function test(){
-    console.log("test function called");
-
-        $("#visually-hidden-client-details").removeClass('visuall-hidden');
-}

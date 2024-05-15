@@ -126,12 +126,13 @@ function getClients() {
         success: function (response) {
             $("#client-card")
             console.log(response);
-            $("#client-card").append(`
-            <div class="card" style="cursor: pointer;" id="${response.id}" onclick="clientDetails('${response.id}','${response.client}')" data-target="#client-details" data-toggle="modal"> 
-            <div class="card-body">${response.client}</div>
-            <div class="card-footer">
-            </div>
-        </div>
+            $("#client-card table tbody").append(`
+            <tr>
+            <td>${response.client}</td>
+            <td>
+                <button class="btn btn-primary btn-sm" onclick="clientDetails('${response.id}','${response.client}')" id="${response.id}">View</button>
+            </td>
+        </tr>
             `);
             console.log(response);
         },
@@ -145,3 +146,8 @@ $('.swalDefaultSuccess').click(function () {
         title: 'New Client Added'
     })
 });
+function test(){
+    console.log("test function called");
+
+        $("#visually-hidden-client-details").removeClass('visuall-hidden');
+}

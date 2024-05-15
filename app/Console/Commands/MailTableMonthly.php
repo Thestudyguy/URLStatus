@@ -34,48 +34,8 @@ class MailTableMonthly extends Command
      */
     public function handle()
     {
-        $this->info('Checking url...');
-        $this->info(' ');
-        $currentDate = date('l, F j, Y');
         try {
-            $individualEmail = [];
-            $data = Urlcs::all();
-            foreach ($data as $url) {
-                $status = Http::get($url->url)->status();
-                $statusCode = substr($status, 0, 1);
-                
-                if ($status != $url->status) {
-                    $url_emails = DB::table('emails')
-                    ->where('url', $url->id)
-                    ->pluck('email');
-                    $countShit = 0;
-                    foreach ($url_emails as $singleMail) {
-                        $sendTo = $singleMail;
-                        Urlcs::where('id', $url->id)->update(['status' => $status]);
-                        if($statusCode == 4 || $statusCode == 5){
-                            $URLstatus = (' url '.$url->url. ' Status went from '.$url->status.' to '.$status);
-                            Mail::to($sendTo)->send(new SendTableAsMail($URLstatus, $currentDate));
-                            $this->info("mail sent to recipient");
-                            if ($url->status != $status) {
-                                $this->info(' url '.$url->url. ' old stat '. $url->status. ' new stat '. $status);
-                               $histry = urlhistory::create([
-                                    'url' => $url->url,
-                                    'old_status' =>$url->status,
-                                    'new_status' =>$status,
-                                    'url_ref' => $url->id
-                                ]);
-                                $this->info('new record created in history '. $histry);
-                            }else{
-                                $this->info("No url change status ". $currentDate);
-                            }
-                        }else{
-                           $this->info('we good for now my g');
-                        }
-                    }
-                }
-            }
-            $this->info(' ');
-            $this->info('Command finish');
+           
         } catch (\Throwable $th) {
             throw $th;
         }

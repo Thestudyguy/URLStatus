@@ -12,6 +12,7 @@ use App\Console\Commands\SendEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendTableAsMail;
 use App\Models\email;
+
 class UrlHistoryController extends Command
 {
     /**
@@ -33,25 +34,30 @@ class UrlHistoryController extends Command
      */
     public function handle()
     {
-        $urls = Url::all();
-    
-        foreach ($urls as $url) {
-            $urlId = $url->id;
-            $status = $url->status;
-            $emails = email::where('client', $url->owner)->pluck('email');
-            Mail::to($emails)->send(new SendTableAsMail($status, $urlId));
-            if ($emails->isNotEmpty()) {
-                $this->info("Emails associated with URL (ID: $urlId): " . implode(', ', $emails->toArray()));
-            } else {
-                $this->info("No emails found for URL (ID: $urlId)");
+        try {
+            $this->info('Starting the cron job');
+            $urls = url::all();
+            $clients = email::select('client', 'email')->distinct()->get()->toArray();
+            $currentDate = date("F j Y");
+            foreach ($urls as $url) {
+                $response = Http::get($url->url);
+                $status = $response->status();
+                $clientEmails = array_filter($clients, function ($client) use ($url) {
+                    return $client['client'] === $url->owner;
+                });
+                $clientEmails = array_column($clientEmails, 'email');
+                foreach ($clientEmails as $email) {
+                    if ($status != $url->status) {
+                        
+                        $this->info("URL = $url->url, current status = $url->status, new status = $status, recipient = $email");
+                        Mail::to($email)->send(new SendTableAsMail($status, $currentDate, $url->url, $url->status));
+                    }
+                }
             }
+            $this->info('cron job ended');
+        } catch (\Throwable $th) {
+            throw $th;
         }
-    
-        $this->info('Finish');
-    }
-    
-
-    public function getGTM($gtmcodes){
-
+        
     }
 }

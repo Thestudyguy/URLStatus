@@ -23,10 +23,6 @@ class ProxyController extends Controller
             ->where('clients.id', $id)
             ->distinct()
             ->get();
-            //$arrayToStoreLoopedClientsDataBecauseLaravelIsANaggingBitch = [];
-            //foreach ($clientData as $uniqueData) {
-            //   $arrayToStoreLoopedClientsDataBecauseLaravelIsANaggingBitch[] = $uniqueData;
-            //}
             return response()->json(['data'=>$clientData]);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);

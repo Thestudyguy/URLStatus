@@ -12,25 +12,16 @@
     -webkit-box-shadow: 1px 2px 9px 0px rgba(0, 0, 0, 0.75); 
     -moz-box-shadow: 1px 2px 9px 0px rgba(0, 0, 0, 0.75);">
         <div class="">
-            <table class="table table-stripped">
-                <thead>
-                    <tr>
-                        <th>URL</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><a href="" style="color: whitesmoke;">{{($URLstatus)}}</a></td>
-                    </tr>
-
-                </tbody>
-            </table>
+                        {{($url)}}
+                        Status went from {{$oldStatus}} to {{($status)}}
         </div>
         <br>
         <div>
             {{$currentDate}}
         </div>
+       <footer>
+       MediOne PH <img src="http://localhost:8000/images/logo.png" alt="">
+       </footer>
     </div>
 </body>
 

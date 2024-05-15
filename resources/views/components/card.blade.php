@@ -1,16 +1,24 @@
 <div class="card-container" id="client-card" style='max-height: 350px; overflow:auto;' disabled>
-    @foreach($clients as $client)
-        <div class="card" style="cursor: pointer;" id="{{$client->id}}" onclick="clientDetails('{{$client->id}}','{{$client->client}}')" data-target="#client-details" data-toggle="modal"> 
-            <div class="card-body">{{$client->client}}</div>
-            <div class="card-footer">
-                {{-- <button class="btn btn-danger btn-sm">Remove Client</button> --}}
-                {{-- <button class="btn btn-primary btn-sm" data-target="#client-details" data-toggle="modal" id="{{$client->id}}">View Details</button> --}}
-            </div>
-        </div>
-        @include('components.client-details')
-    @endforeach
+    <table class="table table-stripped">
+        <thead>
+            <th>Client</th>
+            <th>Details</th>
+        </thead>
+        <tbody>
+            @foreach($clients as $client)
+            <tr>
+                <td>{{$client->client}} 
+                    @include('components.client-details')
+                   <div class="asd" id="visually-hidden-client-details">
+                    here
+                   </div>
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-sm" onclick="clientDetails('{{$client->id}}','{{$client->client}}')" id="{{$client->id}}">View</button>
+                    <button class="btn btn-primary btn-sm" onclick="test()">View</button>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
-{{-- $emails = Email::select('emails.email')
-    ->join('urls', 'emails.client', '=', 'urls.owner')
-    ->get(); --}}
-    

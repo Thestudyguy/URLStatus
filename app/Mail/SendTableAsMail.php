@@ -13,15 +13,19 @@ use Illuminate\Queue\SerializesModels;
 class SendTableAsMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $URLstatus;
+    public $status;
     public $currentDate;
+    public $url;
+    public $oldStatus;
     /**
      * Create a new message instance.
      */
-    public function __construct($URLstatus, $currentDate)
+    public function __construct($status, $currentDate, $url, $oldStatus)
     {
-        $this->URLstatus = $URLstatus;
+        $this->status = $status;
         $this->currentDate = $currentDate;
+        $this->url = $url;
+        $this->oldStatus = $oldStatus;
     }
 
     /**

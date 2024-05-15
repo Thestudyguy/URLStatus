@@ -69,6 +69,7 @@
     <script src="{{asset('dist/js/pages/dashboard.js')}}"></script>
     <script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
     <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+    <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
 </body>
 
 </html>

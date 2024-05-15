@@ -9,6 +9,7 @@ $(document).ready(function () {
 
 function clientDetails(id, client) {
     var client_id = id;
+    console.log(id, client);
     var csrfToken = $('meta[name="csrf-token"]').attr("content");
     var client = client;
     $("#client-details h4").html(client);
@@ -66,35 +67,16 @@ function clientDetails(id, client) {
                     footerBG = 'bg-danger';
                 }
                 console.log(footerBG);
-                $("#client-details div[class='append-res']").append(`
-                        <div class="card direct-chat direct-chat-primary col-xl-5 col-lg-5 col-sm-12">
-                        <div class="card-header" title='${url} view details'>
-                        ${strappedUrl}
-                          <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                              <i class="fas fa-minus"></i>
-                            </button>
-                          </div>
-                        </div>
-                        <div class="card-body">
-                        <table class="table table-stripped" style='height: 100px'>
-                            <thead>
-                                <th>GTM Codes</th>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                    ${isGtmPresent}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        </div>
-                        <div class="card-footer ${footerBG} m-3">
-                         <div class='text-sm text-secodnary'>URL Status ${status}</div>
-                        </div>
-                      </div>
-                `);
+                console.log(strappedUrl);
+                console.log(gtmCodesHtml);
+                console.log(status);
+                //$("#client-card table tbody").append(`
+                //        ${url}
+                //        ${strappedUrl}
+                //        ${isGtmPresent}
+                //        ${footerBG}
+                //        ${status}
+                //`);
             });
         },
         // style='min-height: 10px; overflow: auto;'

@@ -10,7 +10,8 @@ class urlhistory extends Model
 {
     use HasFactory;
     protected $fillable = ['url', 'status', 'old_status', 'new_status', 'url_id'];
-    public function url() : BelongsTo{
-        return $this->belongsTo(urlhistory::class, 'url');
+    public function url() : BelongsTo
+    {
+        return $this->belongsTo(url::class);
     }
 }

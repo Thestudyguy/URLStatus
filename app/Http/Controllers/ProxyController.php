@@ -6,6 +6,7 @@ use App\Models\clients;
 use App\Models\email;
 use App\Models\gtmcodes;
 use App\Models\url;
+use App\Models\urlhistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -42,5 +43,12 @@ class ProxyController extends Controller
             throw $th;
         }
     }
-    
+    public function getURLHistory()
+{
+    $urlHistories = urlhistory::with('url')
+        ->selectRaw('DISTINCT url, DATE_FORMAT(created_at, "%m/%d/%Y") as date, status')
+        ->get();
+    Log::info("Hey this is the history mother bitches $$urlHistories");
+    return $urlHistories;
+}
 }

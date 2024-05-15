@@ -11,7 +11,8 @@ class url extends Model
 {
     use HasFactory;
     protected $fillable = ['url', 'status', 'owner'];
-    public function urlHistory() : HasMany{
-        return $this->hasMany(urlhistory::class, 'url');
+    public function history() : HasMany
+    {
+        return $this->hasMany(urlhistory::class);
     }
 }

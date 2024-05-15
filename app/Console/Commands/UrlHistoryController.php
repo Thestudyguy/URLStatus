@@ -48,7 +48,13 @@ class UrlHistoryController extends Command
                 $clientEmails = array_column($clientEmails, 'email');
                 foreach ($clientEmails as $email) {
                     if ($status != $url->status) {
-                        
+                        urlhistory::create([
+                            'url' => $url->url,
+                            'status' => $status,
+                            'old_status' => $url->status,
+                            'new_status' => $status,
+                            'url_id' => $url->id
+                        ]);
                         $this->info("URL = $url->url, current status = $url->status, new status = $status, recipient = $email");
                         Mail::to($email)->send(new SendTableAsMail($status, $currentDate, $url->url, $url->status));
                     }

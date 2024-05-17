@@ -8,7 +8,7 @@ use App\Models\url;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-use App\Models\clients;
+use App\Models\Clients;
 class NewClientController extends Controller
 {
     public function SaveNewClient(Request $request){

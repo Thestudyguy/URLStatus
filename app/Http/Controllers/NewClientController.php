@@ -18,7 +18,7 @@ class NewClientController extends Controller
         $client_contact = $request->client_contact;
         $urls = $request->url;
         $emails = $request->email;
-        $client_saved = clients::create([
+        $client_saved = Clients::create([
             'client' => $client,
             'email' => $client_email,
             'contact' => $client_contact,
@@ -70,7 +70,7 @@ class NewClientController extends Controller
     //okay na diri from saveGTMadnURL to saveNewClient
     public function getClients(){
         try {
-            $clients = clients::latest()->first();
+            $clients = Clients::latest()->first();
             return $clients;
         } catch (\Throwable $th) {
             throw $th;
@@ -78,7 +78,7 @@ class NewClientController extends Controller
     }
     public function default(){
         try {
-            $clients = clients::all();
+            $clients = Clients::all();
             return view('index', compact('clients'));
         } catch (\Throwable $th) {
             throw $th;

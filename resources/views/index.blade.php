@@ -34,7 +34,7 @@
                     <div class="card-title-primary">Clients</div>
                 </div>
                 <div class="card-body">
-                    @include('components.Card')
+                    @include('components.card')
                     <div class="" id="element"></div>
                 </div>
                 <div class="card-footer">

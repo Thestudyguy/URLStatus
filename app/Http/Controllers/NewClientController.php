@@ -76,7 +76,7 @@ class NewClientController extends Controller
             throw $th;
         }
     }
-    public function default(){
+    public function defaultPage(){
         try {
             $clients = Clients::all();
             return view('index', compact('clients'));

@@ -44,11 +44,14 @@ class ProxyController extends Controller
         }
     }
     public function getURLHistory()
-{
-    $urlHistories = urlhistory::with('url')
-        ->selectRaw('DISTINCT url, DATE_FORMAT(created_at, "%m/%d/%Y") as date, status')
-        ->get();
-    Log::info("Hey this is the history mother bitches $$urlHistories");
-    return $urlHistories;
-}
+    {
+        $ladyBoy = DB::table('clients')
+            ->join('urls', 'clients.id', '=', 'urls.owner')
+            ->join('urlhistories', 'urls.id', '=', 'urlhistories.url_id')
+            ->select('clients.client', 'clients.id as client_id', 'urls.id', 'urls.url', 'urls.owner', 'urlhistories.old_status', 'urlhistories.created_at')
+            ->distinct()
+            ->get()
+            ->groupBy('client_id');
+        return view('pages.url', compact('ladyBoy'));
+    }
 }

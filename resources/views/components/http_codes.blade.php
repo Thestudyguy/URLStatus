@@ -16,7 +16,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body bg-info text-center">Informational Response</div>
+                        <div class="card-body text-sm bg-info text-center">Informational Response</div>
                     </div>
                     <div class="card">
                         <div class="card-header">
@@ -26,7 +26,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body bg-success text-center">Success</div>
+                        <div class="card-body text-sm bg-success text-center">Success</div>
                     </div>
                     <div class="card">
                         <div class="card-header">
@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body bg-secondary text-center">Redirection</div>
+                        <div class="card-body text-sm bg-secondary text-center">Redirection</div>
                     </div>
                     <div class="card">
                         <div class="card-header">
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body bg-warning text-center">Client Error</div>
+                        <div class="card-body text-sm bg-warning text-center">Client Error</div>
                     </div>
                     <div class="card">
                         <div class="card-header">
@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body bg-danger text-center">Server Error</div>
+                        <div class="card-body text-sm bg-danger text-center">Server Error</div>
                     </div>
                 </div>
             </div>

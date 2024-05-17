@@ -14,7 +14,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="url" class="nav-link">
+                            <a href="url-history" class="nav-link">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
                                     URL History

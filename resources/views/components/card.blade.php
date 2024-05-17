@@ -24,7 +24,6 @@
                         </tr>
                     </thead>
                     <tbody id="urls_{{$client->id}}">
-                        <!-- Populate your data here -->
                     </tbody>
                 </table>
             </div>
@@ -34,23 +33,13 @@
 </div>
 
 <script>
-    // Get all client-details-link buttons
 var clientDetailsLinks = document.querySelectorAll('.client-details-link');
-
-// Loop through each client-details-link button
 clientDetailsLinks.forEach(function(clientDetailsLink) {
-    // Get the corresponding close-icon button
     var closeIcon = clientDetailsLink.nextElementSibling;
-
-    // Add event listener for click event on clientDetails-link button
     clientDetailsLink.addEventListener('click', function() {
-        // Toggle the visibility of the close-icon button
         closeIcon.hidden = !closeIcon.hidden;
     });
-
-    // Add event listener for click event on close-icon button
     closeIcon.addEventListener('click', function() {
-        // Toggle the visibility of the close-icon button
         closeIcon.hidden = !closeIcon.hidden;
     });
 });

@@ -62,9 +62,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-success swalDefaultSuccess">
+            {{-- <button type="button" class="btn btn-success swalDefaultSuccess">
                   Launch Success Toast
-                </button>
+                </button> --}}
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" id="saveBtn" class="btn btn-primary">Save</button>
             </div>

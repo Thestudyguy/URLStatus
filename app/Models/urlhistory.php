@@ -12,6 +12,6 @@ class urlhistory extends Model
     protected $fillable = ['url', 'status', 'old_status', 'new_status', 'url_id'];
     public function url() : BelongsTo
     {
-        return $this->belongsTo(url::class);
+        return $this->belongsTo(url::class, 'url_id');
     }
 }

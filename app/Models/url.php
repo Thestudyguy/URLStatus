@@ -13,6 +13,6 @@ class url extends Model
     protected $fillable = ['url', 'status', 'owner'];
     public function history() : HasMany
     {
-        return $this->hasMany(urlhistory::class);
+        return $this->hasMany(urlhistory::class, 'url_id');
     }
 }

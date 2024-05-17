@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\clients;
 use App\Models\email;
-use App\Models\Emails;
 use App\Models\gtmcodes;
 use App\Models\url;
-use App\Models\Urlcs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;

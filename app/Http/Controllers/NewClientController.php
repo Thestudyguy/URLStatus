@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\clients;
 use App\Models\email;
 use App\Models\gtmcodes;
 use App\Models\url;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-use App\Models\Clients;
 class NewClientController extends Controller
 {
     public function SaveNewClient(Request $request){
@@ -18,7 +18,7 @@ class NewClientController extends Controller
         $client_contact = $request->client_contact;
         $urls = $request->url;
         $emails = $request->email;
-        $client_saved = Clients::create([
+        $client_saved = clients::create([
             'client' => $client,
             'email' => $client_email,
             'contact' => $client_contact,
@@ -70,7 +70,7 @@ class NewClientController extends Controller
     //okay na diri from saveGTMadnURL to saveNewClient
     public function getClients(){
         try {
-            $clients = Clients::latest()->first();
+            $clients = clients::all();
             return $clients;
         } catch (\Throwable $th) {
             throw $th;
@@ -78,7 +78,7 @@ class NewClientController extends Controller
     }
     public function default(){
         try {
-            $clients = Clients::all();
+            $clients = clients::all();
             return view('index', compact('clients'));
         } catch (\Throwable $th) {
             throw $th;

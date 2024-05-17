@@ -17,5 +17,4 @@ class clients extends Model
         return $this->hasMany(url::class, 'owner');
     }
     
-    
 }

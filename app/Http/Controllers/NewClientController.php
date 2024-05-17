@@ -78,7 +78,7 @@ class NewClientController extends Controller
     }
     public function default(){
         try {
-            $clients = clients::all();
+            $clients = Clients::all();
             return view('index', compact('clients'));
         } catch (\Throwable $th) {
             throw $th;

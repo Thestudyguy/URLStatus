@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\clients;
+use App\Models\Clients;
 use App\Models\email;
 use App\Models\gtmcodes;
 use App\Models\url;

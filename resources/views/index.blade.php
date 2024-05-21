@@ -34,8 +34,6 @@
             <div class="card">
                 <div class="card-header" id="card-header-client">
                     <div class="card-title-primary">Clients</div>
-    <button class="btn btn-primary" onclick="resClients()">test</button>
-
                     <input type="search" class="form-control" placeholder="Search..." name="search" id="search">
                 </div>
                 <div class="card-body">

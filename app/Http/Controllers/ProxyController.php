@@ -54,4 +54,32 @@ class ProxyController extends Controller
             ->groupBy('client_id');
         return view('pages.url', compact('ladyBoy'));
     }
+    public function removeClient(Request $request){
+        try {
+            $clientID = $request->id; 
+            client::where('id', $clientID)->update(['IsVisible' => false]);
+            return response()->json([
+                'response' => 'client removed', 
+                200
+            ]);
+        } catch (\Exception $th) {
+            throw $th;
+            return response()->json(['error' => $th]);
+        }
+    }
+    public function searchClient(Request $request) {
+        try {
+            $search = $request->search;
+            Log::info($search);
+            if (!empty($search)) {
+                $client = client::where('client', 'like', "%$search%")->get();
+            } else {
+                $client = client::all();
+            }
+    
+            return response()->json(['data' => $client]);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
 }

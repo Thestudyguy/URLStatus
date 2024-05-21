@@ -78,6 +78,14 @@ class NewClientController extends Controller
             throw $th;
         }
     }
+    public function getAllClients(){
+        try {
+            $clients = client::latest();
+            return $clients;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
     public function defaultPage(){
         try {
             $clients = client::all();

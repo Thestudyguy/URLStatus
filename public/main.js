@@ -4,10 +4,13 @@ $(document).ready(function () {
         $('.append-res').empty();
     });
 });
+var Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 5000,
+});
 
-// $("#close-icon").on('click', function(){
-    
-// })
 
 function toggleAccordion(collapseId) {
     console.log('opened');
@@ -90,3 +93,97 @@ function clientDetails(id, client) {
         }
     })
 }
+
+function removeClient(id, client) {
+    var deleteAlert = $(`#delete-alert-${id}`);
+    deleteAlert.fadeIn();
+    deleteAlert.removeAttr('hidden');
+    deleteAlert.html(`Are you sure you want to remove ${client} ? 
+    <span style='cursor: pointer; font-size: .8rem;' class="badge p-2 text-bg-danger" onclick="confirmDelete(${id}, true)">Yes</span>
+    <span style='cursor: pointer; font-size: .8rem;' class="badge p-2 text-bg-success" onclick="confirmDelete(${id}, false)">No</span>
+    `);
+}
+
+function confirmDelete(id, confirm) {
+    var csrfToken = $('meta[name="csrf-token"]').attr("content");
+    var deleteAlert = $(`#delete-alert-${id}`);
+    if (confirm) {
+        deleteAlert.attr('hidden', 'hidden');
+        $.ajax({
+            url: 'remove-client',
+            method: 'POST',
+            data: {'id' : id, '_token' : csrfToken},
+            success: function(response){
+                getClients();
+                console.log(response);
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Removed',
+                    text: 'Client removed successfully!'
+                });
+            },
+            error: function(xhr, status, error){
+                console.log(xhr);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    title: 'Something went horribly wrong'
+                });
+            }
+        });
+    } else {
+        deleteAlert.attr('hidden', 'hidden');
+    }
+}
+    function resClients() {
+    var csrfToken = $('meta[name="csrf-token"]').attr("content");
+    $.ajax({
+        url: "get-url",
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': csrfToken },
+        success: function (client) {
+                var htmlContent = '';
+                htmlContent += `<div class="card">
+                    <div class="card-header" id="heading${client.id}">
+                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                            <button id="clientDetails-link-${client.id}" onclick="clientDetails('${client.id}','${client.client}')" class="client-details-link btn btn-link" data-toggle="collapse" data-target="#collapse${client.id}" aria-expanded="true" aria-controls="collapse${client.id}">
+                            ${client.client}
+                            </button>
+                            <button hidden class="close-icon btn btn-transparent btn-sm" id="close-icon-${client.id}" onclick="toggleAccordion('#collapse${client.id}')">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button class="remove-icon btn btn-danger btn-sm" id="${client.id}" onclick="removeClient('${client.id}','${client.client}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapse${client.id}" class="collapse" aria-labelledby="heading${client.id}" data-parent="#accordion">
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>URL</th>
+                                        <th>Status</th>
+                                        <th>GTM Codes</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="urls_${client.id}">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer" id="delete-alert-${client.id}" hidden>
+                    </div>
+                </div>`;
+            $('#accordion').html(htmlContent);
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to load clients. Please try again.'
+                });
+            }
+        });
+    }
+    

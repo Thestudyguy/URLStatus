@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('main.js') }}" defer></script>
     <script src="{{ asset('add-new-client.js') }}" defer></script>
+    <script src="{{ asset('search.js') }}" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,12 +27,16 @@
 
 <body>
     <div class="wrapper">
+        
         @include('components.sidebar')
         <div class="content-wrapper p-5">
             @include('components.http_codes')
             <div class="card">
-                <div class="card-header">
+                <div class="card-header" id="card-header-client">
                     <div class="card-title-primary">Clients</div>
+    <button class="btn btn-primary" onclick="resClients()">test</button>
+
+                    <input type="search" class="form-control" placeholder="Search..." name="search" id="search">
                 </div>
                 <div class="card-body">
                     @include('components.card')

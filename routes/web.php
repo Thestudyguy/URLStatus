@@ -20,8 +20,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [NewClientController::class, 'defaultPage']);
 Route::get('/url-history', [ProxyController::class, 'getURLHistory']);
 Route::get('/clients', [NewClientController::class, 'getClients']);
+Route::post('client-list', [NewClientController::class, 'getAllClients']);
 Route::post('save-new', [NewClientController::class, 'SaveNewClient']);
+Route::post('remove-client', [ProxyController::class, 'removeClient']);
 Route::post('client-details/{id}', [ProxyController::class, 'getClientDataTree']);
 Route::get('/url', function () {
     return view('pages.url');
 });
+Route::post('get-url', [ProxyController::class,'searchClient']);

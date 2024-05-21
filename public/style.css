@@ -86,3 +86,16 @@ table {
 [data-toggle="toggle"] {
 	display: none;
 }
+#card-header-client{
+    background-color: white;
+}
+.card-header, .card-footer{
+    background-color: white;
+}
+
+#http-details .card-header{
+    background-color: white;
+}
+.card {
+    box-shadow: none;
+}

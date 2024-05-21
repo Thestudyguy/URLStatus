@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\clients;
+use App\Models\client;
 use App\Models\email;
 use App\Models\gtmcodes;
 use App\Models\url;
@@ -15,7 +15,7 @@ class ProxyController extends Controller
 {
     public function getClientDataTree($id) {
         try {
-            $clientData = clients::select('clients.client', 'urls.url', 'urls.status', 'gtmcodes.gtm_codes')
+            $clientData = client::select('clients.client', 'urls.url', 'urls.status', 'gtmcodes.gtm_codes')
             ->join('urls', 'clients.id', '=', 'urls.owner')
             ->Leftjoin('gtmcodes', 'urls.id', '=', 'gtmcodes.url')//->join('gtmcodes', 'urls.id', '=', 'gtmcodes.url') sa join diay ko na dale kay di man diay mo return ning amaw 
                                                                   //ug url ug walay associated data sa gi join na table 
@@ -31,7 +31,7 @@ class ProxyController extends Controller
     }
     public function getAll(){
         try {
-            $clientData = clients::select('clients.client', 'urls.url', 'urls.status', 'gtmcodes.gtm_codes')
+            $clientData = client::select('clients.client', 'urls.url', 'urls.status', 'gtmcodes.gtm_codes')
             ->join('urls', 'clients.id', '=', 'urls.owner')
             ->leftJoin('gtmcodes', 'urls.id', '=', 'gtmcodes.url')
             ->distinct()

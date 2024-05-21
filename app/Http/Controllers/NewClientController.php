@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clients;
+use App\Models\client;
 use App\Models\email;
 use App\Models\gtmcodes;
 use App\Models\url;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 class NewClientController extends Controller
@@ -18,12 +19,13 @@ class NewClientController extends Controller
         $client_contact = $request->client_contact;
         $urls = $request->url;
         $emails = $request->email;
-        $client_saved = clients::create([
+        $client_saved = client::create([
             'client' => $client,
             'email' => $client_email,
             'contact' => $client_contact,
         ]);
         $client_id = $client_saved->id;
+        $client_name = $client_saved->client;
         $this->saveGTMandURL($urls, $client_id);
         //saving email
         foreach ($emails as $email) {
@@ -32,7 +34,7 @@ class NewClientController extends Controller
                 'client' => $client_id
             ]);
         }
-        return response()->json(['success' => 'Client added successfuly', 'id' => $client_id]);
+        return response()->json(['success' => 'Client added successfuly', 'id' => $client_id, 'client' => $client_name]);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th]);
         }
@@ -70,7 +72,7 @@ class NewClientController extends Controller
     //okay na diri from saveGTMadnURL to saveNewClient
     public function getClients(){
         try {
-            $clients = clients::all();
+            $clients = client::latest()->first();
             return $clients;
         } catch (\Throwable $th) {
             throw $th;
@@ -78,24 +80,10 @@ class NewClientController extends Controller
     }
     public function defaultPage(){
         try {
-            $clients = Clients::all();
+            $clients = client::all();
             return view('index', compact('clients'));
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 }
-/**
- * MediaOne PH
- * MediaOnePH.business@gmail.com
- * 09123456789
- *  https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2020EA001602
- *  https://www.pemavor.com/solution/keyword-grouping-tool/
- *  www.spyserp.com/keyword-grouping
- *  https://www.pingshiuanchua.com/tools/keyword-clustering/
- *  https://chrome.google.com/webstore/detail/keyword-extractor/hgdanalmcipcgojcicjenedeaoedebla?hl=en
- * 
- * 
- * 
- * 
- */

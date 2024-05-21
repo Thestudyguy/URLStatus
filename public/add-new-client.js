@@ -148,7 +148,13 @@ function getClients() {
         url: "/clients",
         method: 'GET',
         success: function (response) {
-                    $("#accordion").append(`
+            //response.forEach(element => {
+            //    console.log(element);
+            //});
+            console.log(response.id);
+            console.log(response.client);
+            console.log(response);
+            $("#accordion").append(`
                         <div class="card">
                             <div class="card-header" id="heading${response.id}">
                                 <h5 class="mb-0 d-flex justify-content-between align-items-center">

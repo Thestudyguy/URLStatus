@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 //Route::middleware('isUserPrivileged')->group(function(){
 Route::get('/', [NewClientController::class, 'defaultPage']);
 Route::get('/url-history', [ProxyController::class, 'getURLHistory']);
-Route::get('/clients', [NewClientController::class, 'GetClients']);
+Route::get('/clients', [NewClientController::class, 'getClients']);
 Route::post('save-new', [NewClientController::class, 'SaveNewClient']);
 Route::post('client-details/{id}', [ProxyController::class, 'getClientDataTree']);
 Route::get('/url', function () {

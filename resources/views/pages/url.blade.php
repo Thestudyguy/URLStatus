@@ -30,8 +30,13 @@
     @include('components.sidebar')
     <div class="content-wrapper p-5">
         <div id="accordion">
-            URL History
-            @foreach ($ladyBoy as $client_id => $urls)
+            <div class="card-header">
+                URL Histories
+            </div>
+            @if($ladyBoy->isEmpty())
+                <td colspan="3">No data available yet</td>
+            @else
+                @foreach ($ladyBoy as $client_id => $urls)
                 @php
                     $client = $urls->first();
                 @endphp
@@ -64,8 +69,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     @foreach ($urls as $url)
+                                    
                                     @php
                                         $status = $url->old_status;
                                         $statChar = substr($status, 0, 1);
@@ -100,6 +105,7 @@
                     </div>
                 </div>
             @endforeach
+            @endif
         </div>
     </div>
 </div>
